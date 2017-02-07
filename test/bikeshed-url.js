@@ -10,6 +10,13 @@ suite('Bikeshed URLs', function() {
         )
     });
     
+    test('Basic URL with non standard src file name', function() {
+        assert.equal(
+            bikeshedUrl({ src_file: "url.bs" }, fixtures.head),
+            "https://api.csswg.org/bikeshed/?url=https://raw.githubusercontent.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/url.bs"
+        )
+    });
+    
     test('Specific status', function() {
         assert.equal(
             bikeshedUrl({
