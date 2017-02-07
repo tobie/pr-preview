@@ -33,7 +33,6 @@ app.post('/github-hook', function (req, res, next) {
             default:
                 logArgs("Unused request", payload.action, payload.pull_request.base.repo.full_name, payload.number);
         }
-
     } else {
         logArgs("Unverified request", req);
     }
