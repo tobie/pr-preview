@@ -1,6 +1,6 @@
 var assert = require('assert'),
     bikeshedUrl = require('../lib/bikeshed-url');
-const fixtures = require("./fixtures/pr");
+const fixtures = require("./fixtures/pr").pull_request;
 
 suite('Bikeshed URLs', function() {
     test('Basic URL', function() {
