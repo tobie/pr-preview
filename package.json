@@ -4,7 +4,7 @@
   "description": "Bot that adds a preview and diff to pull requests.",
   "main": "index.js",
   "scripts": {
-    "start" : "node index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,14 +16,16 @@
   "bugs": {
     "url": "https://github.com/tobie/webidl-pr-preview/issues"
   },
-  "engines" : {
-    "node" : "v5.3.0"
+  "engines": {
+    "node": "v5.3.0"
   },
   "homepage": "https://github.com/tobie/webidl-pr-preview#readme",
   "dependencies": {
+    "aws-sdk": "^2.9.0",
     "entities": "1.1.1",
     "express": "4.14.0",
     "express-x-hub": "1.0.4",
+    "request": "2.79.0",
     "simple-github": "0.3.0",
     "urlencode": "1.1.0"
   }
