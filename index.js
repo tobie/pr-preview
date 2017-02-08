@@ -28,7 +28,7 @@ app.post('/github-hook', function (req, res, next) {
             case "edited":
             case "reopened":
             case "synchronize":
-                logArgs(`${ payload.pull_request.repo.full_name }#${ payload.number }: ${ payload.action }`);
+                logArgs(`${ payload.pull_request.base.repo.full_name }#${ payload.number }: ${ payload.action }`);
                 require("./lib/comment")(payload.pull_request).then(logArgs, logArgs);
                 break;
             default:
