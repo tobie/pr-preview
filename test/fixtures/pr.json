@@ -1,5 +1,5 @@
 {
-  "number": 345,
+  "number": 283,
   "action": "opened",
   "pull_request": {
     "url": "https://api.github.com/repos/heycam/webidl/pulls/283",
