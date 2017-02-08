@@ -31,7 +31,7 @@ app.post('/github-hook', function (req, res, next) {
                 require("./lib/comment")(payload.pull_request).then(logArgs, logArgs);
                 break;
             default:
-                logArgs("Unused request", payload.action, payload.pull_request.base.repo.full_name, payload.number);
+                logArgs("Unknown request", JSON.stringify(payload, null, 4));
         }
     } else {
         logArgs("Unverified request", req);
