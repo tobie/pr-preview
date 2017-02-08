@@ -72,4 +72,24 @@ suite('Bikeshed URLs', function() {
             URL + "index.bs&md-title=FOO%20BAR%20tobie%2Fwebidl%2Finterface-objs%23283-7dfd134"
         )
     });
+    
+    test('Templating gracefully handles non strings', function() {
+        assert.equal(
+            bikeshedUrl({
+                config: {
+                    src_file: "index.bs",
+                    bikeshed_parameters: {
+                        "force": 1
+                    }
+                },
+                pull_request: fixtures,
+                owner:        fixtures.head.repo.owner.login,
+                repo:         fixtures.head.repo.name,
+                branch:       fixtures.head.ref,
+                sha:          fixtures.head.sha,
+                short_sha:    fixtures.head.sha.substr(0, 7)
+            }),
+            URL + "index.bs&force=1"
+        )
+    });
 });
