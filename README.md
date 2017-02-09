@@ -1,4 +1,4 @@
-# pr-preview
+# PR Preview
 Adds preview and diff links to pull requests.
 
 ## Install
@@ -7,11 +7,11 @@ This is [available as a GH integration](https://github.com/integration/pr-previe
 
 ## Assumptions
 
-Th only assumption made by pr-preview is that you're using Bikeshed to edit your spec.
+Th only assumption made by PR Preview is that you're using Bikeshed to edit your spec.
 
 ## Configuration
 
-You can configure pr-preview by adding a
+You can configure PR Preview by adding a
 `.pr-preview.json` json file at the root of your repository
 with the following fields:
 
@@ -25,7 +25,7 @@ with the following fields:
 }
 ```
 
-All fields are optional and pr-preview uses the following defaults:
+All fields are optional and PR Preview uses the following defaults:
 
 ```json
 {
