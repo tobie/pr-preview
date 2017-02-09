@@ -2,7 +2,8 @@
 var t0 = Date.now();
 
 var express = require("express"),
-    xhub = require('express-x-hub');
+    xhub = require('express-x-hub'),
+    comment = require("./lib/comment");
 
 if (process.env.NODE_ENV === "dev") {
     // Load local env variables
@@ -29,7 +30,7 @@ app.post('/github-hook', function (req, res, next) {
             case "reopened":
             case "synchronize":
                 logArgs(`${ payload.pull_request.base.repo.full_name }#${ payload.number }: ${ payload.action }`);
-                require("./lib/comment")(payload).then(logArgs, logArgs);
+                comment(payload).then(logArgs, logArgs);
                 break;
             default:
                 logArgs("Unknown request", JSON.stringify(payload, null, 4));
