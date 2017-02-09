@@ -40,7 +40,7 @@ When constructing the URL, `bikeshed_parameters` are rendered as if they were [m
 
 They're passed an object containing the `config` object itself,
 the [`pull_request` payload](https://developer.github.com/v3/pulls/#get-a-single-pull-request)
-and the `owner`, `repo`, `branch`, `sha` and `short_sha` of the branch being rendered:
+and the `owner`, `repo`, `branch`, `sha`, `short_sha` and `url` of the branch being rendered:
 
 ```js
 {
@@ -49,8 +49,9 @@ and the `owner`, `repo`, `branch`, `sha` and `short_sha` of the branch being ren
     owner: "heycam",             // owner's login
     repo: "webidl",              // repo's name
     branch: "gh-pages",          // branch name
-    sha: "7dfd134ee2e6df7fe0..." // duh
-    short_sha: "7dfd134"         // sha truncated to 7 characters
+    sha: "7dfd134ee2e6df7fe...", // duh
+    short_sha: "7dfd134",        // sha truncated to 7 characters
+    url: "https://s3.amazon..."  // URL where the spec will be hosted
 }
 ```
 
