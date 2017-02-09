@@ -1,6 +1,10 @@
 # webidl-pr-preview
 Adds preview and diff links to pull requests.
 
+## Install
+
+This is [available as a GH integration](https://github.com/integration/pr-previewer-for-bikeshed-specs).
+
 ## Assumptions
 
 Th eonly assumption made by webidl-pr-preview is that you're using Bikeshed to edit your spec.
@@ -21,7 +25,7 @@ with the following fields:
 }
 ```
 
-webidl-pr-preview uses the following defaults:
+All fields are otional and webidl-pr-preview uses the following defaults:
 
 ```json
 {
