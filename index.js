@@ -29,7 +29,7 @@ app.post('/github-hook', function (req, res, next) {
             case "reopened":
             case "synchronize":
                 logArgs(`${ payload.pull_request.base.repo.full_name }#${ payload.number }: ${ payload.action }`);
-                require("./lib/comment")(payload.pull_request).then(logArgs, logArgs);
+                require("./lib/comment")(payload).then(logArgs, logArgs);
                 break;
             default:
                 logArgs("Unknown request", JSON.stringify(payload, null, 4));
