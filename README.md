@@ -25,7 +25,7 @@ with the following fields:
 }
 ```
 
-All fields are otional and webidl-pr-preview uses the following defaults:
+All fields are optional and webidl-pr-preview uses the following defaults:
 
 ```json
 {
