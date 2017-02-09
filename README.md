@@ -7,7 +7,7 @@ This is [available as a GH integration](https://github.com/integration/pr-previe
 
 ## Assumptions
 
-Th only assumption made by PR Preview is that you're using Bikeshed to edit your spec.
+The only assumption made by PR Preview is that you're using Bikeshed to edit your spec.
 
 ## Configuration
 
