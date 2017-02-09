@@ -55,3 +55,23 @@ and the `owner`, `repo`, `branch`, `sha`, `short_sha` and `url` of the branch be
 }
 ```
 
+Here's a fairly involved config file example the URL standard could use
+to produce [this snapshot](https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwatilde%2Furl%2Fb46bf404569eece5597067e89749620faf0ea320%2Furl.bs&force=1&md-status=LS-COMMIT&md-h1=URL%20%3Csmall%3E(%3Ca%20href%3D%22https%3A%2F%2Fgithub.com%2Fwhatwg%2Furl%2Fpull%2F234%22%3EPR%20%23234%3C%2Fa%3E)%3C%2Fsmall%3E&md-warning=Commit%20b46bf40%20https%3A%2F%2Fgithub.com%2Fwatilde%2Furl%2Fcommit%2Fb46bf404569eece5597067e89749620faf0ea320%20replaced%20by%20https%3A%2F%2Furl.spec.whatwg.org%2F&md-title=URL%20Standard%20(Pull%20Request%20Snapshot%20%23234)&md-Text-Macro=SNAPSHOT-LINK%20%3Ca%20href%3D%22https%3A%2F%2Furl.spec.whatwg.org%2F%22%20id%3D%22commit-snapshot-link%22%3EGo%20to%20the%20living%20standard%3C%2Fa%3E):
+
+```json
+{
+    "src_file": "url.bs",
+    "ls_url": "https://url.spec.whatwg.org/",
+    "title": "URL Standard",
+    "back_to_ls_link": "<a href=\"https://url.spec.whatwg.org/\" id=\"commit-snapshot-link\">Go to the living standard</a>",
+    "bikeshed_parameters": {
+        "force": 1,
+        "md-status": "LS-COMMIT",
+        "md-h1": "URL <small>(<a href=\"{{ pull_request.html_url }}\">PR #{{ pull_request.number }}</a>)</small>",
+        "md-warning": "Commit {{ short_sha }} {{ pull_request.head.repo.html_url }}/commit/{{ sha }} replaced by {{ config.ls_url }}",
+        "md-title": "{{ config.title }} (Pull Request Snapshot #{{ pull_request.number }})",
+        "md-Text-Macro": "SNAPSHOT-LINK {{ config.back_to_ls_link }}"
+    }
+}
+```
+
