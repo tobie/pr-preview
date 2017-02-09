@@ -3,11 +3,11 @@ Adds preview and diff links to pull requests.
 
 ## Install
 
-This is [available as a GH integration](https://github.com/integration/pr-previewer-for-bikeshed-specs).
+This is [available as a GH integration](https://github.com/integration/pr-preview).
 
 ## Assumptions
 
-Th eonly assumption made by pr-preview is that you're using Bikeshed to edit your spec.
+Th only assumption made by pr-preview is that you're using Bikeshed to edit your spec.
 
 ## Configuration
 
