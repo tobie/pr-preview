@@ -24,16 +24,17 @@ app.post('/github-hook', function (req, res, next) {
     if (process.env.NODE_ENV != 'production' || req.isXHubValid()) {
         res.send(new Date().toISOString());
         var payload = req.body;
-        switch(payload.action) {
-            case "opened":
-            case "edited":
-            case "reopened":
-            case "synchronize":
-                logArgs(`${ payload.pull_request.base.repo.full_name }#${ payload.number }: ${ payload.action }`);
-                comment(payload).then(logArgs, logArgs);
-                break;
-            default:
-                logArgs("Unknown request", JSON.stringify(payload, null, 4));
+        if (payload.pull_request) {
+            logArgs(`${ payload.pull_request.base.repo.full_name }#${ payload.number }: ${ payload.action }`);
+            switch(payload.action) {
+                case "opened":
+                case "edited":
+                case "reopened":
+                case "synchronize":
+                    comment(payload).then(logArgs, logArgs);
+            }
+        } else {
+            logArgs("Unknown request", JSON.stringify(payload, null, 4));
         }
     } else {
         logArgs("Unverified request", req);
