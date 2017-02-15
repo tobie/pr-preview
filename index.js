@@ -1,9 +1,9 @@
 "use strict";
 var t0 = Date.now();
 
-var express = require("express"),
+const express = require("express"),
     xhub = require('express-x-hub'),
-    comment = require("./lib/comment");
+    Controller = require("./lib/controller");
 
 if (process.env.NODE_ENV === "dev") {
     // Load local env variables
@@ -16,6 +16,8 @@ function logArgs() {
         console.log.apply(console, args);
     });
 }
+
+const controller = new Controller();
 
 var app = express();
 app.use(xhub({ algorithm: 'sha1', secret: process.env.GITHUB_SECRET }));
@@ -31,7 +33,7 @@ app.post('/github-hook', function (req, res, next) {
                 case "edited":
                 case "reopened":
                 case "synchronize":
-                    comment(payload).then(logArgs, logArgs);
+                    controller.handlePullRequest(payload).then(logArgs, logArgs);
             }
         } else {
             logArgs("Unknown request", JSON.stringify(payload, null, 4));

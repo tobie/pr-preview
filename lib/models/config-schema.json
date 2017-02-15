@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "PR Preview Config",
+    "description": "Config file for PR Preview.",
+    "properties": {
+      "type": {
+        "definition": "The spec processor used to render this spec.",
+        "enum": ["bikeshed", "Bikeshed", "BikeShed", "respec", "Respec", "ReSpec"]
+      },
+      "src_file": {
+          "definition": "Relative path to the source file from the root of the repository",
+          "type": "string",
+          "minLength":1
+      },
+      "params": {
+          "definition": "parameters for the spec processor",
+          "type": "object",
+          "additionalProperties": {
+              "anyOf": [
+                  { "type": "string" },
+                  { "type": "number" },
+                  { "type": "boolean" },
+                  { "type": "null" }
+              ]
+          }
+      }
+    },
+    "additionalProperties": true,
+    "required": ["src_file", "type"]
+}
+

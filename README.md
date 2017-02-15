@@ -1,46 +1,52 @@
 # PR Preview
 Adds preview and diff links to pull requests.
 
+## Assumptions
+
+The only assumption made by PR Preview is that you're using either Bikeshed or ReSpec to edit your spec.
+
 ## Install
 
 This is [available as a GH integration](https://github.com/integration/pr-preview).
 
-## Assumptions
+Once the integration is installed,
+you **must** add a configuration file to the root of your repository.
+Nothing will happen until you do.
 
-The only assumption made by PR Preview is that you're using Bikeshed to edit your spec.
 
-## Configuration
+## Configuration file
 
-You can configure PR Preview by adding a
+You must configure PR Preview by adding a
 `.pr-preview.json` json file at the root of your repository
 with the following fields:
 
 ```json
 {
-    "ed_url": "https://heycam.github.io/webidl/",
     "src_file": "index.bs",
-    "bikeshed_parameters": {
+    "type": "bikeshed",
+    "params": {
         "md-foo": "bar"
     }
 }
 ```
 
-All fields are optional and PR Preview uses the following defaults:
+### `src_file` (required)
 
-```json
-{
-    "ed_url": "https://[OWNER_LOGIN].github.io/[REPO_NAME]/",
-    "src_file": "index.bs",
-     "bikeshed_parameters": { }
-}
-```
+This should point to the relative path to the source file from the root of the repository.
 
-### Bikeshed params
+### `type` (required)
 
-`bikeshed_parameters` are used to construct the URL that transform the source file into an html document
-using [Bikeshed's web service](https://api.csswg.org/bikeshed/).
+One of "bikeshed" or "respec".
 
-When constructing the URL, `bikeshed_parameters` are rendered as if they were [mustache template strings](https://github.com/janl/mustache.js#mustachejs---logic-less-mustache-templates-with-javascript).
+### `params` (optional)
+
+`params` are used to construct the URL that transform the source file into an html document
+using either:
+
+* [Bikeshed's web service](https://api.csswg.org/bikeshed/), or
+* [W3C's ReSpec web service](https://github.com/w3c/spec-generator).
+
+When constructing the URL, `params` are rendered as if they were [mustache template strings](https://github.com/janl/mustache.js#mustachejs---logic-less-mustache-templates-with-javascript).
 
 They're passed an object containing the `config` object itself,
 the [`pull_request` payload](https://developer.github.com/v3/pulls/#get-a-single-pull-request)
@@ -65,17 +71,18 @@ to produce [this snapshot](https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw
 ```json
 {
     "src_file": "url.bs",
-    "ed_url": "https://url.spec.whatwg.org/",
-    "title": "URL Standard",
-    "back_to_ls_link": "<a href=\"https://url.spec.whatwg.org/\" id=\"commit-snapshot-link\">Go to the living standard</a>",
-    "bikeshed_parameters": {
+    "type": "bikeshed",
+    "params": {
         "force": 1,
         "md-status": "LS-COMMIT",
         "md-h1": "URL <small>(<a href=\"{{ pull_request.html_url }}\">PR #{{ pull_request.number }}</a>)</small>",
-        "md-warning": "Commit {{ short_sha }} {{ pull_request.head.repo.html_url }}/commit/{{ sha }} replaced by {{ config.ed_url }}",
+        "md-warning": "Commit {{ short_sha }} {{ pull_request.head.repo.html_url }}/commit/{{ sha }} replaced by {{ config.ls_url }}",
         "md-title": "{{ config.title }} (Pull Request Snapshot #{{ pull_request.number }})",
         "md-Text-Macro": "SNAPSHOT-LINK {{ config.back_to_ls_link }}"
-    }
+    },
+    "ls_url": "https://url.spec.whatwg.org/",
+    "title": "URL Standard",
+    "back_to_ls_link": "<a href=\"https://url.spec.whatwg.org/\" id=\"commit-snapshot-link\">Go to the living standard</a>",
 }
 ```
 
