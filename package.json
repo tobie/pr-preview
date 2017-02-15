@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha -u tdd ./test/*.js"
+    "test": "mocha -u tdd ./test/**.js ./test/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
     "mustache": "2.3.0",
     "request": "2.79.0",
     "simple-github": "0.5.0",
+    "tv4": "1.2.7",
     "urlencode": "1.1.0"
   }
 }
