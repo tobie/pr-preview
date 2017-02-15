@@ -82,7 +82,7 @@ to produce [this snapshot](https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw
     },
     "ls_url": "https://url.spec.whatwg.org/",
     "title": "URL Standard",
-    "back_to_ls_link": "<a href=\"https://url.spec.whatwg.org/\" id=\"commit-snapshot-link\">Go to the living standard</a>",
+    "back_to_ls_link": "<a href=\"https://url.spec.whatwg.org/\" id=\"commit-snapshot-link\">Go to the living standard</a>"
 }
 ```
 
