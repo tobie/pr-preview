@@ -45,7 +45,11 @@ app.post('/github-hook', function (req, res, next) {
 });
 
 app.post('/validate-config', bodyParser.urlencoded({ extended: false }), function (req, res, next) {
-    controller.getUrl(req.body).then(url => res.redirect(url), err => res.status(400).send(err)).then(next, next);
+    controller.getUrl(req.body)
+        .then(
+            url => res.redirect(url),
+            err => res.status(400).send({ error: err.message })
+        ).then(next, next);
 });
 
 var port = process.env.PORT || 5000;
