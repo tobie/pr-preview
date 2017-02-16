@@ -1,14 +1,14 @@
 "use strict";
 var t0 = Date.now();
-
-const express = require("express"),
-    xhub = require('express-x-hub'),
-    Controller = require("./lib/controller");
-
 if (process.env.NODE_ENV === "dev") {
     // Load local env variables
     require("./env");
 }
+
+const express = require("express"),
+    bodyParser = require('body-parser'),
+    xhub = require('express-x-hub'),
+    Controller = require("./lib/controller");
 
 function logArgs() {
     var args = arguments;
@@ -42,6 +42,10 @@ app.post('/github-hook', function (req, res, next) {
         logArgs("Unverified request", req);
     }
     next();
+});
+
+app.post('/validate-config', bodyParser.urlencoded({ extended: false }), function (req, res, next) {
+    controller.getUrl(req.body).then(url => res.redirect(url), err => res.status(400).send(err)).then(next, next);
 });
 
 var port = process.env.PORT || 5000;

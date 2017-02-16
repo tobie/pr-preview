@@ -25,13 +25,14 @@
   },
   "dependencies": {
     "aws-sdk": "^2.9.0",
+    "body-parser": "1.16.1",
     "entities": "1.1.1",
     "express": "4.14.0",
     "express-x-hub": "1.0.4",
     "jsonwebtoken": "7.2.1",
     "mustache": "2.3.0",
     "request": "2.79.0",
-    "simple-github": "0.5.0",
+    "simple-github": "0.6.0",
     "tv4": "1.2.7",
     "urlencode": "1.1.0"
   }

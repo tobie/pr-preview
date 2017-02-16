@@ -16,6 +16,8 @@ Nothing will happen until you do.
 
 ## Configuration file
 
+_To test your own config file and its output, go to the [config page](https://tobie.github.io/config.html)._
+
 You must configure PR Preview by adding a
 `.pr-preview.json` json file at the root of your repository
 with the following fields:

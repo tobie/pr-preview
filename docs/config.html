@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+<title>modulr.perf</title>
+<style type="text/css" media="screen">
+   input[type="text"],
+   textarea,
+   body > p {
+     width: 600px;
+  }
+  
+  input[type="text"],
+  textarea {
+     font-size: 1em;
+     font-family: monospace;
+   }
+  
+   body {
+     color: #666;
+     font-family: Verdana, sans-serif;
+     padding: 30px;
+     font-size: 16px;
+   }
+   
+   input[type="submit"] {
+       font-size: 1em;
+   }
+   
+
+   label {
+     font-size: 0.7em;
+   }
+	</style>
+</head>
+<body>
+    <h1>PR Preview previewer</h1>
+    
+    <form action="http://localhost:5000/validate-config" method="post" accept-charset="utf-8">
+        <p>
+            <label for="name">Owner</label><br />
+            <input id=owner type=text placeholder="heycam" name=owner />
+        </label></p>
+
+        <p>
+            <label for="name">Repo</label><br />
+            <input id="name" type=text placeholder="webidl" name=repo />
+        </p>
+        
+        <p>
+            <label for="config">Config file</label><br />
+            <textarea id="config" name=config rows="12" placeholder='{
+    "src_file": "index.bs",
+    "type": "bikeshed",
+    "params": {
+        "force": 1,
+    }
+}'></textarea></p>
+    
+        <p><input type="submit" value="Preview !"></p>
+    </form>
+
+  <p>Insert the content of your config file below.</p>
+  <p>If your browser supports it, you can also just drag and drop a config file anywhere on the page.</p>
+
+<script type="text/javascript" charset="utf-8">
+if (document.addEventListener) {
+  document.addEventListener('drop', function(e) {
+    e.preventDefault();
+    var files = e.dataTransfer.files;
+    for (var i = 0, f; f = files[i]; i++) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var json = e.target.result;
+        document.getElementById('input_zone').value = json;
+        run(json);
+      }
+      reader.onerror = function(e) {
+        console.log(e);
+      }
+      reader.readAsText(f);
+    }
+  }, false);
+}
+
+</script>
+
+</body>
+</html>
