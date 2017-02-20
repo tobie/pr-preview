@@ -27,7 +27,6 @@ app.post('/github-hook', function (req, res, next) {
         res.send(new Date().toISOString());
         var payload = req.body;
         if (payload.pull_request) {
-            logArgs(`${ payload.pull_request.base.repo.full_name }#${ payload.number }: ${ payload.action }`);
             switch(payload.action) {
                 case "opened":
                 case "edited":
@@ -35,9 +34,10 @@ app.post('/github-hook', function (req, res, next) {
                 case "synchronize":
                     controller.handlePullRequest(payload).then(r => {
                         if (r.config) {
+                            logArgs(`${r.id}: ${ payload.action }`);
                             logArgs(r);
                         } else {
-                            logArgs(`${r.id}: no config`);
+                            logArgs(`${r.id}: ${ payload.action } (no config)`);
                         }
                     }, logArgs);
             }
