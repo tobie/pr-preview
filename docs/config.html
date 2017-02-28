@@ -7,6 +7,7 @@
 <style type="text/css" media="screen">
    input[type="text"],
    textarea,
+   iframe,
    body > p {
      width: 600px;
   }
@@ -35,9 +36,9 @@
 	</style>
 </head>
 <body>
-    <h1>PR Preview previewer</h1>
+    <h1>PR Preview setup helper</h1>
     
-    <form action="https://pr-preview.herokuapp.com/validate-config" method="post" accept-charset="utf-8">
+    <form action="https://pr-preview.herokuapp.com/config" method="post" accept-charset="utf-8">
         <p>
             <label for="name">Owner</label><br />
             <input id=owner type=text placeholder="heycam" name=owner />
@@ -56,13 +57,25 @@
     "params": {
         "force": 1
     }
-}'></textarea></p>
+}'>{
+    "src_file": "index.bs",
+    "type": "bikeshed",
+    "params": {
+        "force": 1
+    }
+}</textarea></p>
     
-        <p><input type="submit" value="Preview !"></p>
+        <p>
+            <input type="submit" name="validate" formtarget="preview" value="Preview">
+            <input type="submit" name="pull_request" value="Turn it into pull request">
+        </p>
     </form>
 
   <p>Insert the content of your config file above.</p>
   <p>If your browser supports it, you can also just drag and drop a config file anywhere on the page.</p>
+  
+  <iframe name="preview" src="data:,Waiting%20for%20your%20input..."></iframe>
+        
 
 <script type="text/javascript" charset="utf-8">
 if (document.addEventListener) {

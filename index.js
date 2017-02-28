@@ -50,8 +50,9 @@ app.post('/github-hook', function (req, res, next) {
     next();
 });
 
-app.post('/validate-config', bodyParser.urlencoded({ extended: false }), function (req, res, next) {
-    controller.getUrl(req.body)
+app.post('/config', bodyParser.urlencoded({ extended: false }), function (req, res, next) {
+    let params = req.body;
+    controller[params.validate ? "getUrl" : "pullRequestUrl"](req.body)
         .then(
             url => res.redirect(url),
             err => res.status(400).send({ error: err.message })
