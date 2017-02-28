@@ -30,7 +30,7 @@
    }
    
 
-   label {
+   label, small {
      font-size: 0.7em;
    }
 	</style>
@@ -50,20 +50,8 @@
         </p>
         
         <p>
-            <label for="config">Config file</label><br />
-            <textarea id="config" name=config rows="12" placeholder='{
-    "src_file": "index.bs",
-    "type": "bikeshed",
-    "params": {
-        "force": 1
-    }
-}'>{
-    "src_file": "index.bs",
-    "type": "bikeshed",
-    "params": {
-        "force": 1
-    }
-}</textarea></p>
+            <label for="config">Config file</label> <small>(<a id=bikeshed href="#">Use Bikeshed default</a> | <a id=respec href="#">Use Respec default</a>)</small><br />
+            <textarea id="config" name=config rows="12"></textarea></p>
     
         <p>
             <input type="submit" name="validate" formtarget="preview" value="Preview">
@@ -72,7 +60,7 @@
     </form>
 
   
-  <iframe name="preview" src="data:,Waiting%20for%20your%20input..." frameborder=0></iframe>
+  <iframe name="preview" src="" frameborder=0></iframe>
         
 
 <script type="text/javascript" charset="utf-8">
@@ -92,6 +80,15 @@ if (document.addEventListener) {
       }
       reader.readAsText(f);
     }
+  }, false);
+  
+  document.querySelector("#bikeshed").addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector("#config").value = '{\n    "src_file": "index.bs",\n    "type": "bikeshed",\n    "params": {\n        "force": 1\n    }\n}';
+  }, false);
+  document.querySelector("#respec").addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector("#config").value = '{\n    "src_file": "index.html",\n    "type": "respec"\n}';
   }, false);
 }
 
