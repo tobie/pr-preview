@@ -44,6 +44,7 @@ suite("Branch model", function() {
         assert.equal(h.cache_url, "https://s3.amazonaws.com/bar/tobie/webidl/interface-objs.html");
         h.pr.config = { src_file: "foo.bs" };
         assert.equal(h.github_url, "https://raw.githubusercontent.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
+        assert.equal(h.rawgit_url, "https://cdn.rawgit.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
     });
     
     test("Test Base getters", function() {
@@ -53,7 +54,7 @@ suite("Branch model", function() {
         assert.equal(b.cache_url, "https://s3.amazonaws.com/bar/heycam/webidl/gh-pages/3834774.html");
     });
     
-    const RESPEC_URL = "https://labs.w3.org/spec-generator/?type=respec&url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
+    const RESPEC_URL = "https://labs.w3.org/spec-generator/?type=respec&url=https%3A%2F%2Fcdn.rawgit.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
     
     test("Test getUrl", function() {
         let h = new Branch.Head(payload.pull_request.head, new PR(payload));
