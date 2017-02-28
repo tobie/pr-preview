@@ -56,7 +56,7 @@ app.post('/config', bodyParser.urlencoded({ extended: false }), function (req, r
         .then(
             url => res.redirect(url),
             err => res.status(400).send({ error: err.message })
-        ).then(next, next);
+        ).then(_ => next(), _ => next());
 });
 
 var port = process.env.PORT || 5000;
