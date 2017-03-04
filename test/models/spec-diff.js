@@ -19,7 +19,7 @@ suite("SpecDiff model", function() {
     
     test("Test key getter", function() {
         let pr = new PR(payload);
-        assert.equal(new SpecDiff(pr.head, pr.base).key, "heycam/webidl/3834774..tobie:interface-objs:7dfd134.html");
-        assert.equal(new SpecDiff(pr.base, pr.base).key, "heycam/webidl/3834774..gh-pages:3834774.html");
+        assert.equal(new SpecDiff(pr.head, pr.base).key, "heycam/webidl/3834774...tobie:7dfd134.html");
+        assert.equal(new SpecDiff(pr.base, pr.base).key, "heycam/webidl/3834774...3834774.html");
     });
 });
