@@ -54,6 +54,11 @@ suite("Branch model", function() {
         assert.equal(b.cache_url, "https://s3.amazonaws.com/bar/heycam/webidl/gh-pages/3834774.html");
     });
     
+    test("Test MergeBase getters", function() {
+        let b = new Branch.MergeBase("2eb8839fcbc6f04cae8fede477ced39cdbb07329", payload.pull_request.base, new PR(payload));
+        assert.equal(b.sha, "2eb8839fcbc6f04cae8fede477ced39cdbb07329");
+    });
+    
     const RESPEC_URL = "https://labs.w3.org/spec-generator/?type=respec&url=https%3A%2F%2Fcdn.rawgit.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
     
     test("Test getUrl", function() {

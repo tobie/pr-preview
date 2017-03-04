@@ -63,10 +63,6 @@ const BODY = `* Extract legacy callback interface objects
         assert.equal(pr.base.constructor.name, "Base");
     });
     
-    test("diff prop", function() {
-        assert.equal(new PR(payload).diff.constructor.name, "SpecDiff");
-    });
-    
     test("get/set config", function() {
         let pr = new PR(payload);
         assert.throws(_ => pr.config, Error);
