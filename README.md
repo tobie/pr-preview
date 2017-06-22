@@ -1,5 +1,8 @@
 # PR Preview
+
 Adds preview and diff links to pull requests.
+
+![screenshot](/images/screenshot-1.jpg)
 
 ## Assumptions
 
@@ -7,12 +10,19 @@ The only assumption made by PR Preview is that you're using either Bikeshed or R
 
 ## Install
 
-This is [available as a GH integration](https://github.com/integration/pr-preview).
+This is [available as a GitHub App](https://github.com/apps/pr-preview).
 
 Once the integration is installed,
 you **must** add a configuration file to the root of your repository.
 Nothing will happen until you do.
 
+Note that the following orgs have blanket install of pr-preview,
+which means that [adding a config file](https://tobie.github.io/pr-preview/config.html)
+is all you need to be setup if your repository is hosted in one of them:
+
+* [github.com/w3c](https://github.com/w3c/)
+* [github.com/whatwg](https://github.com/whatwg/)
+* [github.com/wicg](https://github.com/wicg/)
 
 ## Configuration file
 
