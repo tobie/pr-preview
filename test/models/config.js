@@ -74,3 +74,16 @@ suite("Config validation", function() {
     });
 });
 
+suite("Config.override", function() {
+    test("Bikeshed config left untouched", function() {
+        assert.deepEqual({ type: "bikeshed" }, Config.override({ type: "bikeshed" }));
+    });
+
+    test("Force specStatus param for Respec", function() {
+        assert.deepEqual({
+            type: "respec",
+            params: { specStatus: "unofficial" }
+        }, Config.override({ type: "respec" }));
+    });
+});
+
