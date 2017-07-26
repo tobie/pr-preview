@@ -82,7 +82,7 @@ suite("Config.override", function() {
     test("Force specStatus param for Respec", function() {
         assert.deepEqual({
             type: "respec",
-            params: { specStatus: "unofficial" }
+            params: { specStatus: "preview" }
         }, Config.override({ type: "respec" }));
     });
 });
