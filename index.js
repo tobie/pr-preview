@@ -38,6 +38,7 @@ app.post('/github-hook', function (req, res, next) {
                             logArgs(r);
                         } else if (r.error) {
                             logArgs(`${r.id}: ${ payload.action } (${r.error.name}: ${r.error.message})`);
+                            if (err.data) { logArgs(err.data) };
                         } else {
                             logArgs(`${r.id}: ${ payload.action } (no config)`);
                         }
