@@ -33,14 +33,15 @@ app.post('/github-hook', function (req, res, next) {
                 case "reopened":
                 case "synchronize":
                     controller.handlePullRequest(payload).then(r => {
-                        if (r.config) {
-                            logArgs(`${r.id}: ${ payload.action }`);
-                            logArgs(r);
-                        } else if (r.error) {
-                            logArgs(`${r.id}: ${ payload.action } (${r.error.name}: ${r.error.message})`);
+                        var err = r.error;
+                        if (err && err.noConfig) {
+                            logArgs(`${r.id}: ${ payload.action } (no config)`);
+                        } else if (err) {
+                            logArgs(`${r.id}: ${ payload.action } (${err.name}: ${err.message})`);
                             if (err.data) { logArgs(err.data) };
                         } else {
-                            logArgs(`${r.id}: ${ payload.action } (no config)`);
+                            logArgs(`${r.id}: ${ payload.action }`);
+                            logArgs(r);
                         }
                     }, logArgs);
             }
