@@ -27,23 +27,27 @@ app.post('/github-hook', function (req, res, next) {
         res.send(new Date().toISOString());
         var payload = req.body;
         if (payload.pull_request) {
-            switch(payload.action) {
-                case "opened":
-                case "edited":
-                case "reopened":
-                case "synchronize":
-                    controller.handlePullRequest(payload).then(r => {
-                        var err = r.error;
-                        if (err && err.noConfig) {
-                            logArgs(`${r.id}: ${ payload.action } (no config)`);
-                        } else if (err) {
-                            logArgs(`${r.id}: ${ payload.action } (${err.name}: ${err.message})`);
-                            if (err.data) { logArgs(err.data) };
-                        } else {
-                            logArgs(`${r.id}: ${ payload.action }`);
-                            logArgs(r);
-                        }
-                    }, logArgs);
+            if (payload.pull_request.base.repo.full_name == "w3c/web-platform-tests") {
+                logArgs("skipping web-platform-tests");
+            } else {
+                switch(payload.action) {
+                    case "opened":
+                    case "edited":
+                    case "reopened":
+                    case "synchronize":
+                        controller.handlePullRequest(payload).then(r => {
+                            var err = r.error;
+                            if (err && err.noConfig) {
+                                logArgs(`${r.id}: ${ payload.action } (no config)`);
+                            } else if (err) {
+                                logArgs(`${r.id}: ${ payload.action } (${err.name}: ${err.message})`);
+                                if (err.data) { logArgs(err.data) };
+                            } else {
+                                logArgs(`${r.id}: ${ payload.action }`);
+                                logArgs(r);
+                            }
+                        }, logArgs);
+                }
             }
         } else {
             logArgs("Unknown request", JSON.stringify(payload, null, 4));
