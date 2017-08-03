@@ -1,6 +1,6 @@
 # PR Preview
 
-PR Preview makes it easy to preview pull requests of specs and vizualize the changes they bring about.
+**PR Preview makes it super easy to preview pull requests of specs and vizualize the changes they bring about.**
 
 PR Preview uses [web](https://labs.w3.org/spec-generator/) [services](https://api.csswg.org/bikeshed/)
 to build a ReSpec or Bikeshed versions of the spec in the pull request,
