@@ -1,12 +1,23 @@
 # PR Preview
 
-Adds preview and diff links to pull requests.
+PR Preview makes it easy to preview pull requests of specs and vizualize the changes they bring about.
+
+PR Preview uses [web](https://labs.w3.org/spec-generator/) [services](https://api.csswg.org/bikeshed/)
+to build a ReSpec or Bikeshed versions of the spec in the pull request,
+which it stores on AWS.
+
+It then uses this spec preview to create an HTML diff of the spec
+(using [yet another web service](https://services.w3.org/htmldiff))
+which also gets stored on AWS.
+
+Finally, PR Preview conveniently links both preview and HTML diff from within the pull request itself:
 
 ![screenshot](/images/screenshot-1.jpg)
 
 ## Assumptions
 
-The only assumption made by PR Preview is that you're using either Bikeshed or ReSpec to edit your spec.
+The only assumption made by PR Preview is that you're using
+the latest version of either Bikeshed or ReSpec to edit your spec.
 
 ## Install
 
