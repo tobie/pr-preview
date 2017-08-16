@@ -74,16 +74,30 @@ suite("Config validation", function() {
     });
 });
 
-suite("Config.override", function() {
-    test("Bikeshed config left untouched", function() {
-        assert.deepEqual({ type: "bikeshed" }, Config.override({ type: "bikeshed" }));
+suite("Config.addDefault", function() {
+    test("Defaults md-warning to 'not ready' for Bikeshed configs", function() {
+        assert.deepEqual({
+            type: "bikeshed",
+            params: { "md-warning": "not ready" }
+        }, Config.addDefault({ type: "bikeshed" }));
     });
 
-    test("Force specStatus param for Respec", function() {
+    test("Default isPreview param to true for ReSpec configs", function() {
         assert.deepEqual({
             type: "respec",
             params: { isPreview: true }
-        }, Config.override({ type: "respec" }));
+        }, Config.addDefault({ type: "respec" }));
+    });
+
+    test("Defaults do not overide actual config", function() {
+        assert.deepEqual({
+            type: "bikeshed",
+            params: { "md-warning": "boo" }
+        }, Config.addDefault({ type: "bikeshed",  params: { "md-warning": "boo" } }));
+        assert.deepEqual({
+            type: "respec",
+            params: { isPreview: false }
+        }, Config.addDefault({ type: "respec", params: { isPreview: false } }));
     });
 });
 
