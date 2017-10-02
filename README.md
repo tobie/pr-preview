@@ -19,6 +19,15 @@ Finally, PR Preview conveniently links both preview and HTML diff from within th
 The only assumption made by PR Preview is that you're using
 the latest version of either Bikeshed or ReSpec to edit your spec.
 
+## Known issues
+
+ReSpec is known to have race condition issues when it's included using the async attribute.
+Instead, use the defer attribute like so:
+
+```html
+<script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove" defer></script>
+```
+
 ## Install
 
 This is [available as a GitHub App](https://github.com/apps/pr-preview).

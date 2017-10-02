@@ -13,13 +13,14 @@
   }
   
   input[type="text"],
-  textarea {
+  textarea,
+  pre {
      font-size: 1em;
      font-family: monospace;
    }
   
    body {
-     color: #666;
+     color: #333;
      font-family: Verdana, sans-serif;
      padding: 30px;
      font-size: 16px;
@@ -33,6 +34,25 @@
    label, small {
      font-size: 0.7em;
    }
+   
+   .warning {
+       width: 600px;
+   }
+   
+   .warning p code{
+       font-weight: bold;
+   }
+      
+   .warning p {
+       font-style: italic;
+   }
+   
+   .warning pre {
+       background-color: #eee;
+       padding: 15px;
+       overflow: scroll;
+   }
+
 	</style>
 </head>
 <body>
@@ -51,8 +71,17 @@
         
         <p>
             <label for="config">Config file</label> <small>(<a id=bikeshed href="#">Use Bikeshed default</a> | <a id=respec href="#">Use Respec default</a>)</small><br />
+            <div id="respec-warning" class="warning" style="display: none">
+                <p>ReSpec is known to have race condition issues when it's included using the <code>async</code> attribute.
+                Instead, use the <code>defer</code> attribute like so:</p>
+                <pre><code>&lt;script
+  src=&quot;https://www.w3.org/Tools/respec/respec-w3c-common&quot;
+  <mark>defer</mark>
+  class="remove"
+&gt;&lt;/script&gt;</code></pre>
+            </div>
             <textarea id="config" name=config rows="12"></textarea></p>
-    
+        
         <p>
             <input type="submit" name="validate" formtarget="preview" value="Preview">
             <input type="submit" name="pull_request" formtarget="_blank" value="Turn it into pull request">
@@ -85,10 +114,14 @@ if (document.addEventListener) {
   document.querySelector("#bikeshed").addEventListener('click', function(e) {
     e.preventDefault();
     document.querySelector("#config").value = '{\n    "src_file": "index.bs",\n    "type": "bikeshed",\n    "params": {\n        "force": 1\n    }\n}';
+    document.querySelector("#respec-warning").style.display = "none";
+    
   }, false);
+  
   document.querySelector("#respec").addEventListener('click', function(e) {
     e.preventDefault();
     document.querySelector("#config").value = '{\n    "src_file": "index.html",\n    "type": "respec"\n}';
+    document.querySelector("#respec-warning").style.display = "block";
   }, false);
 }
 
