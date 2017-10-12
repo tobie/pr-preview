@@ -119,3 +119,30 @@ to produce [this snapshot](https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw
 }
 ```
 
+### `post_processing` (optional)
+
+This let's you opt into post-processing. For example, to use the emu-algify post-processor:
+
+```json
+{
+    "src_file": "index.bs",
+    "type": "bikeshed",
+    "params": {
+        "md-foo": "bar"
+    },
+    "post_processing": {
+        "name": "emu-algify",
+        "options": {
+            "throwingIndicators": true
+        }
+    }
+}
+```
+
+#### `post_processing.name`
+
+Lets you choose the post-processor. Currently, the only supported one is "emu-algify".
+
+#### `post_processing.options` (optional)
+
+Used to pass an options object to the post-processor.

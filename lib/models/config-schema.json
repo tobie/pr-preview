@@ -24,6 +24,22 @@
                   { "type": "null" }
               ]
           }
+      },
+      "post_processing": {
+          "definition": "Set a post processor.",
+          "type": "object",
+          "properties": {
+              "name": {
+                "definition": "Name of the post-processor",
+                "enum": ["emu-algify"]
+              },
+              "options": {
+                  "definition": "Options object for the post-processor",
+                  "type": "object",
+                  "additionalProperties": true
+              }
+          },
+          "required": ["name"]
       }
     },
     "additionalProperties": true,

@@ -72,6 +72,50 @@ suite("Config validation", function() {
             }
         }));
     });
+    
+    test("post-processing, correct name", function() {
+        assert.doesNotThrow(_ => Config.validate({
+            src_file: "foo.bs",
+            type: "respec",
+            post_processing: {
+                "name": "emu-algify"
+            }
+        }));
+    });
+    
+    test("post-processing, incorrect name", function() {
+        assert.throws(_ => Config.validate({
+            src_file: "foo.bs",
+            type: "respec",
+            post_processing: {
+                "name": "foo"
+            }
+        }));
+    });
+    
+    test("post-processing, missing name", function() {
+        assert.throws(_ => Config.validate({
+            src_file: "foo.bs",
+            type: "respec",
+            post_processing: {}
+        }));
+    });
+    
+    test("post-processing, correct config options", function() {
+        assert.doesNotThrow(_ => Config.validate({
+            src_file: "foo.bs",
+            type: "respec",
+            post_processing: {
+                "name": "emu-algify",
+                "config": {
+                    "foo": 123,
+                    "bar": [2, "foo", false],
+                    "foobar": { foo: 123 },
+                    "baz": null
+                }
+            }
+        }));
+    });
 });
 
 suite("Config.addDefault", function() {
