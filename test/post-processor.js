@@ -12,6 +12,14 @@ suite('postProcessor', function() {
         assert.notEqual(postProcessor({name: "emu-algify", options: { foo: 123 }}), postProcessor.noop);
     });
     
+    test('supports emu-algify post-processor', function() {
+        assert.doesNotThrow(_ => postProcessor({name: "emu-algify"}));
+    });
+    
+    test('supports webidl-grammar post-processor', function() {
+        assert.doesNotThrow(_ => postProcessor({name: "webidl-grammar"}));
+    });
+    
     test('throws for incorrect post-processors', function() {
         assert.throws(_ => postProcessor({name: "foo"}));
     });

@@ -141,7 +141,8 @@ This let's you opt into post-processing. For example, to use the emu-algify post
 
 #### `post_processing.name`
 
-Lets you choose the post-processor. Currently, the only supported one is "emu-algify".
+Lets you choose the post-processor.
+Currently, the only supported ones are "emu-algify" and "webidl-grammar".
 
 #### `post_processing.options` (optional)
 
