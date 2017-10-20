@@ -36,6 +36,6 @@
     "simple-github": "0.7.0",
     "tv4": "1.2.7",
     "urlencode": "1.1.0",
-    "webidl-grammar-post-processor": "0.0.1"
+    "webidl-grammar-post-processor": "^0.4.1"
   }
 }
