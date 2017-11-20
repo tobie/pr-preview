@@ -1,5 +1,6 @@
 {
   "PATCH_PR": "PATCH /repos/:owner/:repo/pulls/:number",
+  "GET_PR": "GET /repos/:owner/:repo/pulls/:number",
   "GET_PR_FILES": "GET /repos/:owner/:repo/pulls/:number/files",
   "GET_CONFIG_FILE": "GET /repos/:owner/:repo/contents/.pr-preview.json",
   "GET_COMPARE_COMMITS": "GET /repos/:owner/:repo/compare/:base...:head"
