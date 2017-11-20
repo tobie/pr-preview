@@ -35,7 +35,7 @@ app.post('/github-hook', function (req, res, next) {
                     case "edited":
                     case "reopened":
                     case "synchronize":
-                        controller.handlePullRequest(payload).then(r => {
+                        controller.queuePullRequest(payload).then(r => {
                             var err = r.error;
                             if (err && err.noConfig) {
                                 logArgs(`${r.id}: ${ payload.action } (no config)`);
