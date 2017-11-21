@@ -25,4 +25,10 @@ suite("SpecDiff model", function() {
         assert.equal(new SpecDiff(pr.head, pr.base).key, "heycam/webidl/3834774...tobie:7dfd134.html");
         assert.equal(new SpecDiff(pr.base, pr.base).key, "heycam/webidl/3834774...3834774.html");
     });
+    
+    test("Test key getter for specific page names", function() {
+        let pr = new PR("heycam/webidl/283", { id: 234 });
+        pr.payload = payload.pull_request;
+        assert.equal(new SpecDiff(pr.head, pr.base, "foo").key, "heycam/webidl/3834774...tobie:7dfd134/foo.html");
+    });
 });
