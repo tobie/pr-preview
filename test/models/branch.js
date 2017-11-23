@@ -2,7 +2,44 @@
 const assert = require("assert"),
     Branch = require("../../lib/models/branch"),
     PR = require("../../lib/models/pr");
+
 const payload = require("../fixtures/pr");
+
+function baseFixture() {
+    let pr = new PR("heycam/webidl/283", { id: 234 });
+    pr.payload = payload.pull_request;
+    return new Branch.Base({
+        pr: pr,
+        owner: "heycam",
+        repo: "webidl",
+        branch: "gh-pages",
+        sha: "3834774ee2e6df7fe0af770783a6b76a3fc56867"
+    });
+}
+
+function headFixture() {
+    let pr = new PR("heycam/webidl/283", { id: 234 });
+    pr.payload = payload.pull_request;
+    return new Branch.Head({
+        pr: pr,
+        owner: "tobie",
+        repo: "webidl",
+        branch: "interface-objs",
+        sha: "7dfd134ee2e6df7fe0af770783a6b76a3fc56867"
+    });
+}
+
+function mergeBaseFixture() {
+    let pr = new PR("heycam/webidl/283", { id: 234 });
+    pr.payload = payload.pull_request;
+    return new Branch.Head({
+        pr: pr,
+        owner: "heycam",
+        repo: "webidl",
+        branch: "gh-pages",
+        sha: "2eb8839fcbc6f04cae8fede477ced39cdbb07329"
+    });
+}
 
 suite("Branch model", function() {
  
@@ -10,39 +47,36 @@ suite("Branch model", function() {
         assert.throws(_ => new Branch(), TypeError);
     });
     
-    test("Test constructor throws when a single arg is present", function() {
+    test("Test constructor throws with missing options", function() {
         assert.throws(_ => new Branch({}), TypeError);
-        assert.throws(_ => new Branch(payload.pull_request.head), TypeError);
-    });
-    
-    test("Test constructor throws when a incorrect args are present", function() {
-        assert.throws(_ => new Branch({}, {}), TypeError);
-        assert.throws(_ => new Branch(payload.pull_request.head, {}), TypeError);
-        assert.throws(_ => new Branch({}, new PR("heycam/webidl/283", { id: 234 })), TypeError);
     });
     
     test("Test constructor doesn't throw when the right arguments are present", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
         pr.payload = payload.pull_request;
-        let b = new Branch(payload.pull_request.head, pr);
+        let b = new Branch({
+            pr: pr,
+            owner: "heycam",
+            repo: "webidl",
+            branch: "master",
+            sha: "2eb8839fcbc6f04cae8fede477ced39cdbb07329"
+        });
         assert(b instanceof Branch);
         assert.equal(pr, b.pr);
     });
     
     test("Test getters", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
-        let b = new Branch.Base(payload.pull_request.head, pr);
+        let h = headFixture();
+        let b = baseFixture();
+        process.env.AWS_BUCKET_NAME = "bar";
         assert.equal(h.owner, "tobie");
         assert.equal(h.repo, "webidl");
         assert.equal(h.branch, "interface-objs");
         assert.equal(h.ref, "interface-objs");
         assert.equal(h.sha, "7dfd134ee2e6df7fe0af770783a6b76a3fc56867");
         assert.equal(h.short_sha, "7dfd134");
-        assert.equal(b.key, "tobie/webidl/interface-objs/7dfd134.html");
+        assert.equal(b.key, "heycam/webidl/gh-pages/3834774.html");
         assert.equal(h.key, "tobie/webidl/interface-objs.html");
-        process.env.AWS_BUCKET_NAME = "bar"
         assert.equal(h.cache_url, "https://s3.amazonaws.com/bar/tobie/webidl/interface-objs.html");
         h.pr.config = { src_file: "foo.bs" };
         assert.equal(h.github_url, "https://raw.githubusercontent.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
@@ -50,17 +84,14 @@ suite("Branch model", function() {
     });
     
     test("Test Base getters", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let b = new Branch.Base(payload.pull_request.base, pr);
+        let b = baseFixture();
+        process.env.AWS_BUCKET_NAME = "bar";
         assert.equal(b.key, "heycam/webidl/gh-pages/3834774.html");
         assert.equal(b.cache_url, "https://s3.amazonaws.com/bar/heycam/webidl/gh-pages/3834774.html");
     });
     
     test("Test MergeBase getters", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let b = new Branch.MergeBase("2eb8839fcbc6f04cae8fede477ced39cdbb07329", payload.pull_request.base, pr);
+        let b = mergeBaseFixture    ();
         assert.equal(b.sha, "2eb8839fcbc6f04cae8fede477ced39cdbb07329");
     });
     
@@ -69,7 +100,13 @@ suite("Branch model", function() {
     test("Test getUrl", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
         pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
+        let h = new Branch.Head({
+            pr: pr,
+            owner: "tobie",
+            repo: "webidl",
+            branch: "gh-pages",
+            sha: "7dfd134ee2e6df7fe0af770783a6b76a3fc56867"
+        });
         h.pr.config = {
             src_file: "Overview.html",
             type: "respec"
@@ -78,9 +115,7 @@ suite("Branch model", function() {
     });
     
     test("Test getUrl with options", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
+        let h = headFixture();
         h.pr.config = {
             src_file: "index.html",
             type: "respec",
@@ -90,9 +125,7 @@ suite("Branch model", function() {
     });
     
     test("Test getUrl with template strings", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
+        let h = headFixture();
         h.pr.config = {
             src_file: "index.html",
             type: "respec",
@@ -104,9 +137,7 @@ suite("Branch model", function() {
     const BIKESHED_URL = "https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
     
     test('Test getUrl basic', function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
+        let h = headFixture();
         h.pr.config = {
             type: "bikeshed",
             src_file: "index.bs"
@@ -115,9 +146,7 @@ suite("Branch model", function() {
     });
     
     test('Test getUrl with non standard src file name', function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
+        let h = headFixture();
         h.pr.config = {
             src_file: "url.bs",
             type: "bikeshed"
@@ -126,9 +155,7 @@ suite("Branch model", function() {
     });
     
     test('Test getUrl with specific status', function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
+        let h = headFixture();
         h.pr.config = {
             src_file: "index.bs",
             type: "bikeshed",
@@ -138,9 +165,7 @@ suite("Branch model", function() {
     });
     
     test('Test getUrl using templating', function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
+        let h = headFixture();
         h.pr.config = {
             title: "FOO BAR",
             src_file: "index.bs",
@@ -153,9 +178,7 @@ suite("Branch model", function() {
     });
     
     test('Test getUrl templating gracefully handles non strings', function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
+        let h = headFixture();
         h.pr.config = {
             src_file: "index.bs",
             type: "bikeshed",
@@ -167,6 +190,7 @@ suite("Branch model", function() {
     });
     
     test('Test urlOptions', function() {
+        let h = headFixture();
         let config = {
             src_file: "index.bs",
             type: "bikeshed",
@@ -174,10 +198,8 @@ suite("Branch model", function() {
                 "force": 1
             }
         }
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head(payload.pull_request.head, pr);
         h.pr.config = config;
+        process.env.AWS_BUCKET_NAME = "bar";
         assert.deepEqual(h.urlOptions(), {
             config:       config,
             pull_request: payload.pull_request,
