@@ -76,8 +76,8 @@ suite("Branch model", function() {
         assert.equal(h.sha, "7dfd134ee2e6df7fe0af770783a6b76a3fc56867");
         assert.equal(h.short_sha, "7dfd134");
         assert.equal(b.key, "heycam/webidl/gh-pages/3834774.html");
-        assert.equal(h.key, "tobie/webidl/interface-objs.html");
-        assert.equal(h.cache_url, "https://s3.amazonaws.com/bar/tobie/webidl/interface-objs.html");
+        assert.equal(h.key, "tobie/webidl/pull/283.html");
+        assert.equal(h.cache_url, "https://s3.amazonaws.com/bar/tobie/webidl/pull/283.html");
         h.pr.config = { src_file: "foo.bs" };
         assert.equal(h.github_url, "https://raw.githubusercontent.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
         assert.equal(h.rawgit_url, "https://cdn.rawgit.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
@@ -208,7 +208,7 @@ suite("Branch model", function() {
             branch:       "interface-objs",
             sha:          "7dfd134ee2e6df7fe0af770783a6b76a3fc56867",
             short_sha:    "7dfd134",
-            url:          "https://s3.amazonaws.com/bar/tobie/webidl/interface-objs.html"
+            url:          "https://s3.amazonaws.com/bar/tobie/webidl/pull/283.html"
         });
     });
 });
