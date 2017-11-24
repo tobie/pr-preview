@@ -61,13 +61,6 @@ const BODY = `* Extract legacy callback interface objects
         assert.equal(pr.body, BODY);
     });
     
-    test("head/base prop", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        assert.equal(pr.head.constructor.name, "Head");
-        assert.equal(pr.base.constructor.name, "Base");
-    });
-    
     test("get/set config", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
         assert.throws(_ => pr.config, Error);
