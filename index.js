@@ -29,6 +29,8 @@ app.post('/github-hook', function (req, res, next) {
         if (payload.pull_request) {
             if (payload.pull_request.base.repo.full_name == "w3c/web-platform-tests") {
                 logArgs("skipping web-platform-tests");
+            } if (payload.sender && payload.sender.login == "pr-preview") {
+                logArgs("skipping auto-generated changes");
             } else {
                 switch(payload.action) {
                     case "opened":
