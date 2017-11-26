@@ -27,6 +27,8 @@ app.post('/github-hook', function (req, res, next) {
         res.send(new Date().toISOString());
         var payload = req.body;
         if (payload.pull_request) {
+            console.log(JSON.stringify(payload, null, 4));
+            
             if (payload.pull_request.base.repo.full_name == "w3c/web-platform-tests") {
                 logArgs("skipping web-platform-tests");
             } if (payload.sender && payload.sender.login == "pr-preview") {
