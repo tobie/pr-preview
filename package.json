@@ -17,7 +17,8 @@
     "url": "https://github.com/tobie/webidl-pr-preview/issues"
   },
   "engines": {
-    "node": "6.11.1"
+    "node": "8.7.0",
+    "npm": "5.5.1"
   },
   "homepage": "https://github.com/tobie/webidl-pr-preview#readme",
   "devDependencies": {
