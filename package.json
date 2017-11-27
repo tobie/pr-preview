@@ -1,6 +1,6 @@
 {
   "name": "pr-preview",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Bot that adds a preview and diff to pull requests.",
   "main": "index.js",
   "scripts": {
