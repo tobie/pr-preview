@@ -77,7 +77,7 @@ suite("Branch model", function() {
         assert.equal(h.short_sha, "7dfd134");
         assert.equal(b.key, "heycam/webidl/pull/283/3834774.html");
         assert.equal(h.key, "tobie/webidl/pull/283.html");
-        assert.equal(h.cache_url, "https://s3.amazonaws.com/bar/tobie/webidl/pull/283.html");
+        assert.equal(h.cache_url, "https://bar.s3.amazonaws.com/tobie/webidl/pull/283.html");
         h.pr.config = { src_file: "foo.bs" };
         assert.equal(h.github_url, "https://raw.githubusercontent.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
         assert.equal(h.rawgit_url, "https://cdn.rawgit.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
@@ -87,7 +87,7 @@ suite("Branch model", function() {
         let b = baseFixture();
         process.env.AWS_BUCKET_NAME = "bar";
         assert.equal(b.key, "heycam/webidl/pull/283/3834774.html");
-        assert.equal(b.cache_url, "https://s3.amazonaws.com/bar/heycam/webidl/pull/283/3834774.html");
+        assert.equal(b.cache_url, "https://bar.s3.amazonaws.com/heycam/webidl/pull/283/3834774.html");
     });
     
     test("Test MergeBase getters", function() {
@@ -208,7 +208,7 @@ suite("Branch model", function() {
             branch:       "interface-objs",
             sha:          "7dfd134ee2e6df7fe0af770783a6b76a3fc56867",
             short_sha:    "7dfd134",
-            url:          "https://s3.amazonaws.com/bar/tobie/webidl/pull/283.html"
+            url:          "https://bar.s3.amazonaws.com/tobie/webidl/pull/283.html"
         });
     });
 });

@@ -3,6 +3,6 @@ var assert = require('assert'),
 
 suite('Cache.getUrl', function() {
     test('getUrl(k)', function() {
-        assert.equal(cache.getUrl("foo", "abc.html"), "https://s3.amazonaws.com/foo/abc.html")
+        assert.equal(cache.getUrl("foo", "abc.html"), "https://foo.s3.amazonaws.com/abc.html")
     });
 });
