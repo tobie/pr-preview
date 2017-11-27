@@ -32,6 +32,7 @@
     "express": "4.14.0",
     "express-x-hub": "1.0.4",
     "jsonwebtoken": "7.2.1",
+    "mkdirp-promise": "^5.0.1",
     "mustache": "2.3.0",
     "request": "2.79.0",
     "simple-github": "0.7.0",
