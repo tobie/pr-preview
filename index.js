@@ -65,7 +65,10 @@ app.post('/config', bodyParser.urlencoded({ extended: false }), function (req, r
     controller[params.validate ? "getUrl" : "pullRequestUrl"](req.body)
         .then(
             url => res.redirect(url),
-            err => res.status(400).send({ error: err.message })
+            err => {
+                res.status(400).send({ error: err.message });
+                logArgs(`${err.name}: ${err.message}\n${err.stack}`);
+            }
         ).then(_ => next(), _ => next());
 });
 
