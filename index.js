@@ -17,7 +17,44 @@ function logArgs() {
     });
 }
 
+function logResult(r, action) {
+    var err = r.error;
+    if (err && err.noConfig) {
+        logArgs(`${r.id}: ${ action } (no config)`);
+    } else if (err) {
+        logArgs(`${r.id}: ${ action } (${err.name}: ${err.message})`);
+        if (err.data) { logArgs(err.data) };
+    } else {
+        logArgs(`${r.id}: ${ action }`);
+        logArgs(r);
+    }
+}
+
 const controller = new Controller();
+
+const STARTUP_QUEUE = process.env.STARTUP_QUEUE;
+if (STARTUP_QUEUE) {
+    try {
+        let queue = JSON.parse(STARTUP_QUEUE);
+        if (queue && queue.length) {
+            logArgs(`Processing queue : ${queue}`);
+        
+            Promise.all(queue.map(id => {
+                return controller.handlePullRequest({
+                    installation_id: -1,
+                    id: id
+                }).then(r => logResult(r, "startup-queue"), logArgs);
+            })).then(`Startup queue processed`);
+        } else {
+            throw new Error();
+        }
+    } catch (e) {
+        logArgs(`Malformed queue ${STARTUP_QUEUE}`);
+    }
+    
+} else {
+    logArgs("No startup queue present");
+}
 
 var app = express();
 app.use(xhub({ algorithm: 'sha1', secret: process.env.GITHUB_SECRET }));
@@ -32,23 +69,13 @@ app.post('/github-hook', function (req, res, next) {
             } if (payload.sender && payload.sender.login == "pr-preview[bot]") {
                 logArgs("skipping auto-generated changes");
             } else {
-                switch(payload.action) {
+                let action = payload.action
+                switch(action) {
                     case "opened":
                     case "edited":
                     case "reopened":
                     case "synchronize":
-                        controller.queuePullRequest(payload).then(r => {
-                            var err = r.error;
-                            if (err && err.noConfig) {
-                                logArgs(`${r.id}: ${ payload.action } (no config)`);
-                            } else if (err) {
-                                logArgs(`${r.id}: ${ payload.action } (${err.name}: ${err.message})`);
-                                if (err.data) { logArgs(err.data) };
-                            } else {
-                                logArgs(`${r.id}: ${ payload.action }`);
-                                logArgs(r);
-                            }
-                        }, logArgs);
+                        controller.queuePullRequest(payload).then(r => logResult(r, action), logArgs);
                 }
             }
         } else {
