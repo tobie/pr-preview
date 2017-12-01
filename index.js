@@ -44,7 +44,7 @@ if (STARTUP_QUEUE) {
                     installation_id: -1,
                     id: id
                 }).then(r => logResult(r, "startup-queue"), logArgs);
-            })).then(`Startup queue processed`);
+            })).then(_ => logResult("Startup queue processed"));
         } else {
             throw new Error();
         }
