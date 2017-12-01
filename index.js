@@ -37,14 +37,13 @@ if (STARTUP_QUEUE) {
     try {
         let queue = JSON.parse(STARTUP_QUEUE);
         if (queue && queue.length) {
-            logArgs(`Processing queue : ${queue}`);
+            logArgs(`Processing queue : ${ STARTUP_QUEUE }`);
         
             Promise.all(queue.map(id => {
                 return controller.handlePullRequest({
-                    installation_id: -1,
-                    id: id
+                    installation_id: -1, id: id
                 }).then(r => logResult(r, "startup-queue"), logArgs);
-            })).then(_ => logResult("Startup queue processed"));
+            })).then(_ => logArgs("Startup queue processed"));
         } else {
             throw new Error();
         }
