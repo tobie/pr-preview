@@ -48,7 +48,7 @@ suite("SpecDiff model", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
         pr.payload = payload.pull_request;
         pr.merge_base_sha = "c2fd513de33ea3f053495f4e135614db6e6aa617";
-        let sp = new File(pr, "foo").diff;
+        let sp = new File(pr, "foo.html").diff;
         assert.equal(sp.key, "heycam/webidl/c2fd513...tobie:7dfd134/foo.html");
     });
 });
