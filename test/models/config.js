@@ -132,16 +132,29 @@ suite("Config.addDefault", function() {
             params: { isPreview: true }
         }, Config.addDefault({ type: "respec" }));
     });
+    
+    test("Defaults multipage param to true for Wattsi configs", function() {
+        assert.deepEqual({
+            type: "wattsi",
+            multipage: true
+        }, Config.addDefault({ type: "wattsi" }));
+    });
 
     test("Defaults do not overide actual config", function() {
         assert.deepEqual({
             type: "bikeshed",
             params: { "md-warning": "boo" }
         }, Config.addDefault({ type: "bikeshed",  params: { "md-warning": "boo" } }));
+
         assert.deepEqual({
             type: "respec",
             params: { isPreview: false }
         }, Config.addDefault({ type: "respec", params: { isPreview: false } }));
+
+        assert.deepEqual({
+            type: "wattsi",
+            multipage: false
+        }, Config.addDefault({ type: "wattsi", multipage: false }));
     });
 });
 

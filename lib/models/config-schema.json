@@ -40,6 +40,10 @@
               }
           },
           "required": ["name"]
+      },
+      "multipage": {
+          "definition": "Whether the rendered spec is multipage.",
+          "type": "boolean"
       }
     },
     "additionalProperties": true,
