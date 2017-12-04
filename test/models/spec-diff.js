@@ -35,13 +35,13 @@ suite("SpecDiff model", function() {
         pr.payload = payload.pull_request;
         pr.merge_base_sha = "c2fd513de33ea3f053495f4e135614db6e6aa617";
         let sp = new File(pr).diff;
-        assert.equal(sp.key, "heycam/webidl/c2fd513...tobie:7dfd134.html");
+        assert.equal(sp.key, "heycam/webidl/283/c2fd513...tobie:7dfd134.html");
         
         pr = new PR("heycam/webidl/283", { id: 234 });
         pr.payload = payload2.pull_request;
         pr.merge_base_sha = "c2fd513de33ea3f053495f4e135614db6e6aa617";
         sp = new File(pr).diff;
-        assert.equal(sp.key, "heycam/webidl/c2fd513...7dfd134.html");
+        assert.equal(sp.key, "heycam/webidl/283/c2fd513...7dfd134.html");
     });
     
     test("Test key getter for specific page names", function() {
@@ -49,6 +49,6 @@ suite("SpecDiff model", function() {
         pr.payload = payload.pull_request;
         pr.merge_base_sha = "c2fd513de33ea3f053495f4e135614db6e6aa617";
         let sp = new File(pr, "foo.html").diff;
-        assert.equal(sp.key, "heycam/webidl/c2fd513...tobie:7dfd134/foo.html");
+        assert.equal(sp.key, "heycam/webidl/283/c2fd513...tobie:7dfd134/foo.html");
     });
 });
