@@ -63,7 +63,7 @@ app.post('/github-hook', function (req, res, next) {
         if (payload.pull_request) {
             if (payload.pull_request.base.repo.full_name == "w3c/web-platform-tests") {
                 logArgs("skipping web-platform-tests");
-            } if (payload.sender && payload.sender.login == "pr-preview[bot]") {
+            } else if (payload.sender && payload.sender.login == "pr-preview[bot]") {
                 logArgs("skipping auto-generated changes");
             } else {
                 let action = payload.action
