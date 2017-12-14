@@ -31,7 +31,7 @@
           "properties": {
               "name": {
                 "definition": "Name of the post-processor",
-                "enum": ["emu-algify", "webidl-grammar"]
+                "enum": ["emu-algify", "webidl-grammar", "ecmarkup"]
               },
               "options": {
                   "definition": "Options object for the post-processor",
