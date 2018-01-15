@@ -38,17 +38,22 @@ if (STARTUP_QUEUE) {
         let queue = JSON.parse(STARTUP_QUEUE);
         if (queue && queue.length && typeof queue[0].id == "string") {
             logArgs(`Processing queue : ${ STARTUP_QUEUE }`);
-        
-            Promise.all(queue.map(r => {
-                return controller.handlePullRequest(r).then(r => logResult(r, "startup-queue"), logArgs);
-            })).then(_ => logArgs("Startup queue processed"));
+            function next() {
+                var r = queue.pop();
+                if (r) {
+                    logArgs(`Processing queue : ${ r.id }`);
+                    controller.handlePullRequest(r).then(r => logResult(r, "startup-queue"), logArgs).then(next);
+                } else {
+                    logArgs("Startup queue processed");
+                }
+            }
+            next();
         } else {
             throw new Error();
         }
     } catch (e) {
         logArgs(`Malformed queue ${STARTUP_QUEUE}`);
     }
-    
 } else {
     logArgs("No startup queue present");
 }
