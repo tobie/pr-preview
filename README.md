@@ -147,3 +147,7 @@ Currently, the only supported ones are "emu-algify" and "webidl-grammar".
 #### `post_processing.options` (optional)
 
 Used to pass an options object to the post-processor.
+
+***
+
+Hosting generously provided by <a href="https://www.heroku.com/home">Heroku</a>.
