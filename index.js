@@ -24,6 +24,7 @@ function logResult(r, action) {
     } else if (err) {
         logArgs(`${r.id}: ${ action } (${err.name}: ${err.message})`);
         if (err.data) { logArgs(err.data) };
+        if (err.stack && process.env.DISPLAY_STACK_TRACES == "yes") { logArgs(err.stack) };
     } else {
         logArgs(`${r.id}: ${ action }`);
         logArgs(r);
