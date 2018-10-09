@@ -48,7 +48,7 @@ const BODY = `* Extract legacy callback interface objects
     and remove what's below.
 -->
 ***
-[Preview](https://cdn.jsdelivr.net/gh/tobie/webidl@7dfd134/index.html) | [Diff w/ current ED](https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fheycam.github.io%2Fwebidl%2F&doc2=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Ftobie%2Fwebidl%407dfd134%2Findex.html) | [Diff w/ base](https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fcdn.rawgit.com%2Fheycam%2Fwebidl%2F3834774%2Findex.html&doc2=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Ftobie%2Fwebidl%407dfd134%2Findex.html)`;
+[Preview](https://rawcdn.githack.com/tobie/webidl/7dfd134/index.html) | [Diff w/ current ED](https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fheycam.github.io%2Fwebidl%2F&doc2=https%3A%2F%2Frawcdn.githack.com%2Ftobie%2Fwebidl%2F7dfd134%2Findex.html) | [Diff w/ base](https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fcdn.rawgit.com%2Fheycam%2Fwebidl%2F3834774%2Findex.html&doc2=https%3A%2F%2Frawcdn.githack.com%2Ftobie%2Fwebidl%2F7dfd134%2Findex.html)`;
     
     test("getters", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
