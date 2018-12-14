@@ -23,6 +23,10 @@ function logResult(r, action) {
         logArgs(`${r.id}: ${ action } (no config)`);
     } else if (err) {
         logArgs(`${r.id}: ${ action } (${err.name}: ${err.message})`);
+        if (r.errorRenderingErrorMsg) {
+            logArgs(`    Additionally, triggered the following error while attmepting to render the error msg to the client:
+    ${r.errorRenderingErrorMsg.name}: ${r.errorRenderingErrorMsg.message}`);
+        }
         if (err.data) { logArgs(err.data) };
         if (err.stack && process.env.DISPLAY_STACK_TRACES == "yes") { logArgs(err.stack) };
     } else {
