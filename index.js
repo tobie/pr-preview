@@ -21,6 +21,8 @@ function logResult(r, action) {
     var err = r.error;
     if (err && err.noConfig) {
         logArgs(`${r.id}: ${ action } (no config)`);
+    } else if (err && err.raceCondition) {
+        logArgs(`${r.id}: ${ action } (race condition)`);
     } else if (err) {
         logArgs(`${r.id}: ${ action } (${err.name}: ${err.message})`);
         if (r.errorRenderingErrorMsg) {
