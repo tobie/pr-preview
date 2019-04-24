@@ -29,6 +29,7 @@ function logResult(r, action) {
         }
         if (err.data) { logArgs(err.data) };
         if (err.stack && process.env.DISPLAY_STACK_TRACES == "yes") { logArgs(err.stack) };
+        logArgs(r);
     } else {
         logArgs(`${r.id}: ${ action }`);
         logArgs(r);
