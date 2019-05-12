@@ -17,7 +17,7 @@ Finally, PR Preview conveniently links both preview and HTML diff from within th
 ## Assumptions
 
 The only assumption made by PR Preview is that you're using
-the latest version of either Bikeshed or ReSpec to edit your spec.
+the latest version of either Bikeshed or ReSpec, or vanilla HTML to edit your spec.
 
 ## Known issues
 
@@ -69,7 +69,7 @@ This should point to the relative path to the source file from the root of the r
 
 ### `type` (required)
 
-One of "bikeshed" or "respec".
+One of "bikeshed", "respec", or "html".
 
 ### `params` (optional)
 
