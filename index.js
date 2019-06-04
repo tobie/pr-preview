@@ -19,23 +19,32 @@ function logArgs() {
 
 function logResult(r, action) {
     var err = r.error;
-    if (err && err.noConfig) {
-        logArgs(`${r.id}: ${ action } (no config)`);
-    } else if (err && err.raceCondition) {
-        logArgs(`${r.id}: ${ action } (race condition)`);
-    } else if (err) {
-        logArgs(`${r.id}: ${ action } (${err.name}: ${err.message})`);
-        if (r.errorRenderingErrorMsg) {
-            logArgs(`    Additionally, triggered the following error while attmepting to render the error msg to the client:
-    ${r.errorRenderingErrorMsg.name}: ${r.errorRenderingErrorMsg.message}`);
-        }
-        if (err.data) { logArgs(err.data) };
-        if (err.stack && process.env.DISPLAY_STACK_TRACES == "yes") { logArgs(err.stack) };
-        logArgs(r);
-    } else {
+    
+    // We're all good. Log outcome and exit.
+    if (!err) {
         logArgs(`${r.id}: ${ action }`);
         logArgs(r);
+        return;
     }
+
+    // These are well understood error paths.
+    // They shouldn't trigger error messages.
+    // Log and exit.
+    if (err.noConfig || err.prMerged || err.raceCondition) {
+        logArgs(`${r.id}: ${ action } (${err.message})`);
+        return;
+    }
+
+    // Those are reall issues.
+    // Log in details
+    logArgs(`${r.id}: ${ action } (${err.name}: ${err.message})`);
+    if (r.errorRenderingErrorMsg) {
+        logArgs(`    Additionally, triggered the following error while attempting to render the error msg to the client:
+    errorRenderingErrorMsg.name}: ${r.errorRenderingErrorMsg.message}`);
+    }
+    if (err.data) { logArgs(err.data) };
+    if (err.stack && process.env.DISPLAY_STACK_TRACES == "yes") { logArgs(err.stack) };
+    logArgs(r);
 }
 
 const controller = new Controller();
