@@ -1,5 +1,7 @@
 # PR Preview
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/tobie/pr-preview.svg)](https://greenkeeper.io/)
+
 **PR Preview makes it super easy to preview pull requests of specs and vizualize the changes they bring about.**
 
 PR Preview uses [web](https://labs.w3.org/spec-generator/) [services](https://api.csswg.org/bikeshed/)
