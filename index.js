@@ -82,7 +82,9 @@ app.post('/github-hook', function (req, res, next) {
     if (process.env.NODE_ENV != 'production' || req.isXHubValid()) {
         res.send(new Date().toISOString());
         var payload = req.body;
-        if (payload.pull_request) {
+        if (payload.comment) {
+            logArgs("comment", JSON.stringify(payload, null, 4));
+        } else if (payload.pull_request) {
             if (payload.sender && payload.sender.login == "pr-preview[bot]") {
                 logArgs("skipping auto-generated changes");
             } else {
@@ -95,8 +97,6 @@ app.post('/github-hook', function (req, res, next) {
                         controller.queuePullRequest(payload).then(r => logResult(r, action), logArgs);
                 }
             }
-        } else if (payload.comment) {
-            logArgs("comment", JSON.stringify(payload, null, 4));
         } else {
             logArgs("Unknown request", JSON.stringify(payload, null, 4));
         }
