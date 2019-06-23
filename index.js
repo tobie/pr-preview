@@ -95,6 +95,8 @@ app.post('/github-hook', function (req, res, next) {
                         controller.queuePullRequest(payload).then(r => logResult(r, action), logArgs);
                 }
             }
+        } else if (payload.comment) {
+            logArgs("comment", JSON.stringify(payload, null, 4));
         } else {
             logArgs("Unknown request", JSON.stringify(payload, null, 4));
         }
