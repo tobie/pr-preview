@@ -82,7 +82,7 @@ app.post('/github-hook', function (req, res, next) {
     if (process.env.NODE_ENV != 'production' || req.isXHubValid()) {
         res.send(new Date().toISOString());
         var payload = req.body;
-        if (payload.issue_comment) {
+        if (payload.issue_comment) { // Depends on increased app permission
             logArgs("comment", JSON.stringify(payload, null, 4));
         } else if (payload.pull_request) {
             if (payload.sender && payload.sender.login == "pr-preview[bot]") {
