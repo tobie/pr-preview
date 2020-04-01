@@ -82,6 +82,7 @@ using either:
 * [W3C's ReSpec web service](https://github.com/w3c/spec-generator).
 
 When constructing the URL, `params` are rendered as if they were [mustache template strings](https://github.com/janl/mustache.js#mustachejs---logic-less-mustache-templates-with-javascript).
+You can also use an array of strings, instead of a string, to pass multiple values for the same query parameter.
 
 They're passed an object containing the `config` object itself,
 the [`pull_request` payload](https://developer.github.com/v3/pulls/#get-a-single-pull-request)
@@ -113,7 +114,7 @@ to produce [this snapshot](https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw
         "md-h1": "URL <small>(<a href=\"{{ pull_request.html_url }}\">PR #{{ pull_request.number }}</a>)</small>",
         "md-warning": "Commit {{ short_sha }} {{ pull_request.head.repo.html_url }}/commit/{{ sha }} replaced by {{ config.ls_url }}",
         "md-title": "{{ config.title }} (Pull Request Snapshot #{{ pull_request.number }})",
-        "md-Text-Macro": "SNAPSHOT-LINK {{ config.back_to_ls_link }}"
+        "md-Text-Macro": ["SNAPSHOT-LINK {{ config.back_to_ls_link }}", "COMMIT-SHA {{ sha }}"]
     },
     "ls_url": "https://url.spec.whatwg.org/",
     "title": "URL Standard",
