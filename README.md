@@ -45,6 +45,7 @@ is all you need to be setup if your repository is hosted in one of them:
 * [github.com/w3c](https://github.com/w3c/)
 * [github.com/whatwg](https://github.com/whatwg/)
 * [github.com/wicg](https://github.com/wicg/)
+* [github.com/w3ctag](https://github.com/w3ctag/)
 
 ## Configuration file
 
