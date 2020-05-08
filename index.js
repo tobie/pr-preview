@@ -83,7 +83,9 @@ app.post('/github-hook', function (req, res, next) {
         res.send(new Date().toISOString());
         var payload = req.body;
         if (payload.issue_comment) { // Depends on increased app permission
-            logArgs("comment", JSON.stringify(payload, null, 4));
+            logArgs("comment");
+        } else if (payload.issue) { // Also depends on increased app permission
+            logArgs("issue");
         } else if (payload.pull_request) {
             if (payload.sender && payload.sender.login == "pr-preview[bot]") {
                 logArgs("skipping auto-generated changes");
