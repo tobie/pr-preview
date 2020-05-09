@@ -42,15 +42,15 @@ function mergeBaseFixture() {
 }
 
 suite("Branch model", function() {
- 
+
     test("Test constructor throws when no args are present", function() {
         assert.throws(_ => new Branch(), TypeError);
     });
-    
+
     test("Test constructor throws with missing options", function() {
         assert.throws(_ => new Branch({}), TypeError);
     });
-    
+
     test("Test constructor doesn't throw when the right arguments are present", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
         pr.payload = payload.pull_request;
@@ -64,7 +64,7 @@ suite("Branch model", function() {
         assert(b instanceof Branch);
         assert.equal(pr, b.pr);
     });
-    
+
     test("Test getters", function() {
         let h = headFixture();
         let b = baseFixture();
@@ -82,21 +82,21 @@ suite("Branch model", function() {
         assert.equal(h.github_url, "https://raw.githubusercontent.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
         assert.equal(h.cdn_url, "https://rawcdn.githack.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
     });
-    
+
     test("Test Base getters", function() {
         let b = baseFixture();
         process.env.AWS_BUCKET_NAME = "bar";
         assert.equal(b.key, "heycam/webidl/pull/283/3834774.html");
         assert.equal(b.cache_url, "https://bar.s3.amazonaws.com/heycam/webidl/pull/283/3834774.html");
     });
-    
+
     test("Test MergeBase getters", function() {
         let b = mergeBaseFixture    ();
         assert.equal(b.sha, "2eb8839fcbc6f04cae8fede477ced39cdbb07329");
     });
-    
+
     const RESPEC_URL = "https://labs.w3.org/spec-generator/?type=respec&url=https%3A%2F%2Frawcdn.githack.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
-    
+
     test("Test getUrl", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
         pr.payload = payload.pull_request;
@@ -113,7 +113,7 @@ suite("Branch model", function() {
         };
         assert.equal(h.getUrl(h.urlOptions()), RESPEC_URL + "Overview.html");
     });
-    
+
     test("Test getUrl with options", function() {
         let h = headFixture();
         h.pr.config = {
@@ -123,7 +123,7 @@ suite("Branch model", function() {
         };
         assert.equal(h.getUrl(h.urlOptions()), RESPEC_URL + "index.html%3FspecStatus%3DREC");
     });
-    
+
     test("Test getUrl with template strings", function() {
         let h = headFixture();
         h.pr.config = {
@@ -144,7 +144,7 @@ suite("Branch model", function() {
         };
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL + "index.bs");
     });
-    
+
     test('Test getUrl with non standard src file name', function() {
         let h = headFixture();
         h.pr.config = {
@@ -163,7 +163,7 @@ suite("Branch model", function() {
         };
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&md-status=REC");
     });
-    
+
     test('Test getUrl using templating', function() {
         let h = headFixture();
         h.pr.config = {
@@ -176,7 +176,7 @@ suite("Branch model", function() {
         };
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&md-title=FOO%20BAR%20tobie%2Fwebidl%2Finterface-objs%23283-7dfd134");
     });
-    
+
     test('Test getUrl templating gracefully handles non strings', function() {
         let h = headFixture();
         h.pr.config = {
@@ -188,7 +188,7 @@ suite("Branch model", function() {
         };
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&force=1");
     });
-    
+
     test('Test urlOptions', function() {
         let h = headFixture();
         let config = {
