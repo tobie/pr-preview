@@ -13,6 +13,13 @@
           "type": "string",
           "minLength":1
       },
+      "includes": {
+          "definition": "Relative path to files included by `src_file` from the root of the repository",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+      },
       "params": {
           "definition": "parameters for the spec processor",
           "type": "object",

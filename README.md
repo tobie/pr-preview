@@ -60,6 +60,7 @@ with the following fields:
 {
     "src_file": "index.bs",
     "type": "bikeshed",
+    "includes": ["optional.include", "files.include"],
     "params": {
         "md-foo": "bar"
     }
@@ -73,6 +74,14 @@ This should point to the relative path to the source file from the root of the r
 ### `type` (required)
 
 One of "bikeshed", "respec", or "html".
+
+### `includes` (optional)
+
+Other files in your repository that are included using either
+[Bikeshed's](https://tabatkins.github.io/bikeshed/#including) or
+[Respec's](https://github.com/w3c/respec/wiki/data--include) include mechanism.
+Currently, only Bikeshed includes in the same directory as the main `src_file`
+are supported.
 
 ### `params` (optional)
 
