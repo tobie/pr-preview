@@ -133,10 +133,9 @@ suite("Branch model", function() {
         };
         assert.equal(h.getUrl(h.urlOptions()), RESPEC_URL + "index.html%3Fsubtitle%3DPR%20%23283");
     });
-
-    const ESCAPED_GITHUB_URL_PATH = "https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
-    const BIKESHED_URL = "https://api.csswg.org/bikeshed/?url=" + ESCAPED_GITHUB_URL_PATH;
-
+    
+    const BIKESHED_URL = "https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
+    
     test('Test getUrl basic', function() {
         let h = headFixture();
         h.pr.config = {
@@ -154,17 +153,7 @@ suite("Branch model", function() {
         };
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL + "url.bs");
     });
-
-    test('Test getUrl with some includes', function() {
-        let h = headFixture();
-        h.pr.config = {
-            src_file: "url.bs",
-            includes: ["section1.inc", "bigtable.inc"],
-            type: "bikeshed"
-        };
-        assert.equal(h.getUrl(h.urlOptions()), `${BIKESHED_URL}url.bs&include_urls[]=${ESCAPED_GITHUB_URL_PATH}section1.inc&include_urls[]=${ESCAPED_GITHUB_URL_PATH}bigtable.inc`);
-    });
-
+    
     test('Test getUrl with specific status', function() {
         let h = headFixture();
         h.pr.config = {
