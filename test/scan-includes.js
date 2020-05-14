@@ -64,4 +64,33 @@ suite('scanIncludes', function () {
                 "spec.bs",
             ]));
     });
+    test('include loop should terminate', async function () {
+        assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
+            "https://github.example/repo/spec.bs": { body: "path: loop.inc" },
+            "https://github.example/repo/loop.inc": { body: "path: spec.bs" },
+        })),
+            new Set([
+                "spec.bs",
+                "loop.inc",
+            ]));
+    });
+    test('respec-style includes', async function () {
+        assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "index.html", "respec", fakeFetch({
+            "https://github.example/repo/index.html": {
+                body: `
+            <section id="element-foo"
+                     data-include='single.html'>
+            </section>
+            <section id="element-foo"
+                     data-include="double.html">
+            </section>` },
+            "https://github.example/repo/single.html": { body: "" },
+            "https://github.example/repo/double.html": { body: "" },
+        })),
+            new Set([
+                "index.html",
+                "single.html",
+                "double.html",
+            ]));
+    });
 });
