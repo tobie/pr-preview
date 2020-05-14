@@ -6,7 +6,7 @@ function fakeFetch(results) {
     return async function fetch(url, service) {
         assert.equal(service, GITHUB_SERVICE);
         await new Promise(resolve => setImmediate(resolve));
-        let result = results[url];
+        const result = results[url];
         assert(result);
         if (result.body !== undefined) {
             return result.body;
