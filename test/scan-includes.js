@@ -20,7 +20,7 @@ suite('scanIncludes', function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
             "https://github.example/repo/spec.bs": { body: "bikeshed stuff" },
         })),
-            new Set(["spec.bs"]));
+            new Set([]));
     });
     test('None succeed', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
@@ -37,7 +37,6 @@ suite('scanIncludes', function () {
             "https://github.example/repo/doesntexist.inc": { error: "404" },
         })),
             new Set([
-                "spec.bs",
                 "helper.inc",
                 "helper2.inc",
                 "helper3.inc",
@@ -51,18 +50,14 @@ suite('scanIncludes', function () {
             "https://yet.another.server.example/helper3.inc": { body: "path: https://github.example/repo/poison.inc" },
             "https://github.example/repo/poison.inc": { body: "Shouldn't fetch this." },
         })),
-            new Set([
-                "spec.bs",
-            ]));
+            new Set([]));
     });
     test('Bad URL bits inside repository', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
             "https://github.example/repo/spec.bs": { body: "path: ../repo/poison.inc\npath: /repo/poison.inc\npath: //github.example/repo/poison.inc\npath: https://github.example/repo/poison.inc" },
             "https://github.example/repo/poison.inc": { body: "" },
         })),
-            new Set([
-                "spec.bs",
-            ]));
+            new Set([]));
     });
     test('include loop should terminate', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
@@ -70,7 +65,6 @@ suite('scanIncludes', function () {
             "https://github.example/repo/loop.inc": { body: "path: spec.bs" },
         })),
             new Set([
-                "spec.bs",
                 "loop.inc",
             ]));
     });
@@ -88,7 +82,6 @@ suite('scanIncludes', function () {
             "https://github.example/repo/double.html": { body: "" },
         })),
             new Set([
-                "index.html",
                 "single.html",
                 "double.html",
             ]));
