@@ -20,13 +20,13 @@ suite('scanIncludes', function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
             "https://github.example/repo/spec.bs": { body: "bikeshed stuff" },
         })),
-            new Set([]));
+            []);
     });
     test('None succeed', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
             "https://github.example/repo/spec.bs": { error: "" },
         })),
-            new Set());
+            []);
     });
     test('3 levels', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
@@ -36,11 +36,11 @@ suite('scanIncludes', function () {
             "https://github.example/repo/helper3.inc": { body: "" },
             "https://github.example/repo/doesntexist.inc": { error: "404" },
         })),
-            new Set([
+            [
                 "helper.inc",
                 "helper2.inc",
                 "helper3.inc",
-            ]));
+            ]);
     });
     test('Outside repository', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
@@ -50,23 +50,21 @@ suite('scanIncludes', function () {
             "https://yet.another.server.example/helper3.inc": { body: "path: https://github.example/repo/poison.inc" },
             "https://github.example/repo/poison.inc": { body: "Shouldn't fetch this." },
         })),
-            new Set([]));
+            []);
     });
     test('Bad URL bits inside repository', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
             "https://github.example/repo/spec.bs": { body: "path: ../repo/poison.inc\npath: /repo/poison.inc\npath: //github.example/repo/poison.inc\npath: https://github.example/repo/poison.inc" },
             "https://github.example/repo/poison.inc": { body: "" },
         })),
-            new Set([]));
+            []);
     });
     test('include loop should terminate', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec.bs", "bikeshed", fakeFetch({
             "https://github.example/repo/spec.bs": { body: "path: loop.inc" },
             "https://github.example/repo/loop.inc": { body: "path: spec.bs" },
         })),
-            new Set([
-                "loop.inc",
-            ]));
+            ["loop.inc"]);
     });
     test('respec-style includes', async function () {
         assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "index.html", "respec", fakeFetch({
@@ -81,9 +79,9 @@ suite('scanIncludes', function () {
             "https://github.example/repo/single.html": { body: "" },
             "https://github.example/repo/double.html": { body: "" },
         })),
-            new Set([
-                "single.html",
+            [
                 "double.html",
-            ]));
+                "single.html",
+            ]);
     });
 });
