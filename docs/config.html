@@ -113,7 +113,7 @@ if (document.addEventListener) {
   
   document.querySelector("#bikeshed").addEventListener('click', function(e) {
     e.preventDefault();
-    document.querySelector("#config").value = '{\n    "src_file": "index.bs",\n    "type": "bikeshed",\n    "params": {\n        "force": 1\n    }\n}';
+    document.querySelector("#config").value = '{\n    "src_file": "index.bs",\n    "type": "bikeshed"\n}';
     document.querySelector("#respec-warning").style.display = "none";
     
   }, false);
