@@ -76,7 +76,7 @@ if (STARTUP_QUEUE) {
 }
 
 var app = express();
-app.use(xhub({ algorithm: 'sha1', secret: process.env.GITHUB_SECRET }));
+app.use(xhub({ algorithm: 'sha1', secret: process.env.GITHUB_SECRET, limit: '5Mb'; }));
 
 app.post('/github-hook', function (req, res, next) {
     if (process.env.NODE_ENV != 'production' || req.isXHubValid()) {
