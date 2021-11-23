@@ -43,6 +43,10 @@ function mergeBaseFixture() {
 
 suite("Branch model", function() {
 
+    test("Test a failure", function() {
+        assert(false, "expected failure");
+    });
+
     test("Test constructor throws when no args are present", function() {
         assert.throws(_ => new Branch(), TypeError);
     });
