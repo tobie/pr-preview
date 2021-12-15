@@ -38,7 +38,7 @@ const BODY = `* Extract legacy callback interface objects
   Closes #281.
 
 <!--
-    This comment and the below content is programatically generated.
+    This comment and the below content is programmatically generated.
     You may add a comma-separated list of anchors you'd like a
     direct link to below (e.g. #idl-serializers, #idl-sequence):
     #foo, #bar
