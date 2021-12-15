@@ -4,49 +4,87 @@
     "title": "PR Preview Config",
     "description": "Config file for PR Preview.",
     "properties": {
-      "type": {
-        "definition": "The spec processor used to render this spec.",
-        "enum": ["bikeshed", "Bikeshed", "BikeShed", "respec", "Respec", "ReSpec", "wattsi", "Wattsi", "html", "HTML"]
-      },
-      "src_file": {
-          "definition": "Relative path to the source file from the root of the repository",
-          "type": "string",
-          "minLength":1
-      },
-      "params": {
-          "definition": "parameters for the spec processor",
-          "type": "object",
-          "additionalProperties": {
-              "anyOf": [
-                  { "type": "string" },
-                  { "type": "number" },
-                  { "type": "boolean" },
-                  { "type": "null" }
-              ]
-          }
-      },
-      "post_processing": {
-          "definition": "Set a post processor.",
-          "type": "object",
-          "properties": {
-              "name": {
-                "definition": "Name of the post-processor",
-                "enum": ["emu-algify", "webidl-grammar"]
-              },
-              "options": {
-                  "definition": "Options object for the post-processor",
-                  "type": "object",
-                  "additionalProperties": true
-              }
-          },
-          "required": ["name"]
-      },
-      "multipage": {
-          "definition": "Whether the rendered spec is multipage.",
-          "type": "boolean"
-      }
+        "specs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "allOf": [{"$ref": "#/$defs/common_config"}],
+                "required": ["src_file"]
+            }
+        }
     },
-    "additionalProperties": true,
-    "required": ["src_file", "type"]
+    "allOf": [
+        {"$ref": "#/$defs/common_config"},
+        {
+            "oneOf": [
+                {"required": ["src_file"]},
+                {"required": ["specs"]}
+            ]
+        },
+        {
+            "anyOf": [
+                {"required": ["type"]},
+                {"properties": {"specs": {"items": {"required": ["type"]}}}}
+            ]
+        },
+        {
+            "anyOf": [
+                {"properties": {"specs": {"maxItems": 1}}},
+                {
+                    "properties": {
+                        "type": {"not": {"enum": ["wattsi", "Wattsi"]}},
+                        "specs": {"items": {"properties": {"type": {"not": {"enum": ["wattsi", "Wattsi"]}}}}}
+                    }
+                }
+            ]
+        }
+    ],
+    "$defs": {
+        "common_config": {
+            "properties": {
+                "src_file": {
+                    "definition": "Relative path to the source file from the root of the repository",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "type": {
+                    "definition": "The spec processor used to render this spec.",
+                    "enum": ["bikeshed", "Bikeshed", "BikeShed", "respec", "Respec", "ReSpec", "wattsi", "Wattsi", "html", "HTML"]
+                },
+                "params": {
+                    "definition": "parameters for the spec processor",
+                    "type": "object",
+                    "additionalProperties": {
+                        "anyOf": [
+                            {"type": "string"},
+                            {"type": "number"},
+                            {"type": "boolean"},
+                            {"type": "null"}
+                        ]
+                    }
+                },
+                "post_processing": {
+                    "definition": "Set a post processor.",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "definition": "Name of the post-processor",
+                            "enum": ["emu-algify", "webidl-grammar"]
+                        },
+                        "options": {
+                            "definition": "Options object for the post-processor",
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "required": ["name"]
+                },
+                "multipage": {
+                    "definition": "Whether the rendered spec is multipage.",
+                    "type": "boolean"
+                }
+            }
+        }
+    }
 }
-

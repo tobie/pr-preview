@@ -1,15 +1,19 @@
 "use strict";
 const assert = require("assert"),
     Branch = require("../../lib/models/branch"),
-    PR = require("../../lib/models/pr");
+    PR = require("../../lib/models/pr"),
+    SpecBuild = require("../../lib/models/spec-build");
 
 const payload = require("../fixtures/pr");
 
-function baseFixture() {
+function baseFixture(config = {}) {
     let pr = new PR("heycam/webidl/283", { id: 234 });
     pr.payload = payload.pull_request;
+    let specConfig = {type: "bikeshed", src_file: "foo.bs", ...config};
+    pr.config = {specs: [specConfig]};
     return new Branch.Base({
         pr: pr,
+        specBuild: new SpecBuild(pr, specConfig),
         owner: "heycam",
         repo: "webidl",
         branch: "gh-pages",
@@ -17,11 +21,14 @@ function baseFixture() {
     });
 }
 
-function headFixture() {
+function headFixture(config = {}) {
     let pr = new PR("heycam/webidl/283", { id: 234 });
     pr.payload = payload.pull_request;
+    let specConfig = {type: "bikeshed", src_file: "foo.bs", ...config};
+    pr.config = {specs: [specConfig]};
     return new Branch.Head({
         pr: pr,
+        specBuild: new SpecBuild(pr, specConfig),
         owner: "tobie",
         repo: "webidl",
         branch: "interface-objs",
@@ -29,11 +36,14 @@ function headFixture() {
     });
 }
 
-function mergeBaseFixture() {
+function mergeBaseFixture(config = {}) {
     let pr = new PR("heycam/webidl/283", { id: 234 });
     pr.payload = payload.pull_request;
+    let specConfig = {type: "bikeshed", src_file: "foo.bs", ...config};
+    pr.config = {specs: [specConfig]};
     return new Branch.Head({
         pr: pr,
+        specBuild: new SpecBuild(pr, specConfig),
         owner: "heycam",
         repo: "webidl",
         branch: "gh-pages",
@@ -56,6 +66,7 @@ suite("Branch model", function() {
         pr.payload = payload.pull_request;
         let b = new Branch({
             pr: pr,
+            specBuild: new SpecBuild(pr, {type: "bikeshed", src_file: "foo.bs"}),
             owner: "heycam",
             repo: "webidl",
             branch: "master",
@@ -78,7 +89,6 @@ suite("Branch model", function() {
         assert.equal(b.key, "heycam/webidl/pull/283/3834774.html");
         assert.equal(h.key, "tobie/webidl/pull/283.html");
         assert.equal(h.cache_url, "https://bar.s3.amazonaws.com/tobie/webidl/pull/283.html");
-        h.pr.config = { src_file: "foo.bs" };
         assert.equal(h.github_url, "https://raw.githubusercontent.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
         assert.equal(h.cdn_url, "https://rawcdn.githack.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
     });
@@ -98,99 +108,79 @@ suite("Branch model", function() {
     const RESPEC_URL = "https://labs.w3.org/spec-generator/?type=respec&url=https%3A%2F%2Frawcdn.githack.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
 
     test("Test getUrl", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.payload = payload.pull_request;
-        let h = new Branch.Head({
-            pr: pr,
-            owner: "tobie",
-            repo: "webidl",
-            branch: "gh-pages",
-            sha: "7dfd134ee2e6df7fe0af770783a6b76a3fc56867"
-        });
-        h.pr.config = {
-            src_file: "Overview.html",
-            type: "respec"
-        };
+        let h = headFixture({type: "respec", src_file: "Overview.html"});
         assert.equal(h.getUrl(h.urlOptions()), RESPEC_URL + "Overview.html");
     });
 
     test("Test getUrl with options", function() {
-        let h = headFixture();
-        h.pr.config = {
+        let h = headFixture({
             src_file: "index.html",
             type: "respec",
             params: { "specStatus": "REC" }
-        };
+        });
         assert.equal(h.getUrl(h.urlOptions()), RESPEC_URL + "index.html%3FspecStatus%3DREC");
     });
 
     test("Test getUrl with template strings", function() {
-        let h = headFixture();
-        h.pr.config = {
+        let h = headFixture({
             src_file: "index.html",
             type: "respec",
             params: { "subtitle": "PR #{{ pull_request.number }}" }
-        };
+        });
         assert.equal(h.getUrl(h.urlOptions()), RESPEC_URL + "index.html%3Fsubtitle%3DPR%20%23283");
     });
     
     const BIKESHED_URL = "https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
     
     test('Test getUrl basic', function() {
-        let h = headFixture();
-        h.pr.config = {
+        let h = headFixture({
             type: "bikeshed",
             src_file: "index.bs"
-        };
+        });
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL + "index.bs");
     });
 
     test('Test getUrl with non standard src file name', function() {
-        let h = headFixture();
-        h.pr.config = {
+        let h = headFixture({
             src_file: "url.bs",
             type: "bikeshed"
-        };
+        });
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL + "url.bs");
     });
     
     test('Test getUrl with specific status', function() {
-        let h = headFixture();
-        h.pr.config = {
+        let h = headFixture({
             src_file: "index.bs",
             type: "bikeshed",
             params: { "md-status": "REC" }
-        };
+        });
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&md-status=REC");
     });
 
     test('Test getUrl using templating', function() {
-        let h = headFixture();
-        h.pr.config = {
+        let h = headFixture({
             title: "FOO BAR",
             src_file: "index.bs",
             type: "bikeshed",
             params: {
                 "md-title": "{{config.title}} {{owner}}/{{repo}}/{{branch}}#{{pull_request.number}}-{{short_sha}}"
             }
-        };
+        });
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&md-title=FOO%20BAR%20tobie%2Fwebidl%2Finterface-objs%23283-7dfd134");
     });
 
     test('Test getUrl templating gracefully handles non strings', function() {
-        let h = headFixture();
-        h.pr.config = {
+        let h = headFixture({
             src_file: "index.bs",
             type: "bikeshed",
             params: {
                 "force": 1
             }
-        };
+        });
         assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&force=1");
     });
 
     test('Test urlOptions', function() {
-        let h = headFixture();
         let config = {
             src_file: "index.bs",
             type: "bikeshed",
@@ -198,7 +188,7 @@ suite("Branch model", function() {
                 "force": 1
             }
         }
-        h.pr.config = config;
+        let h = headFixture(config);
         process.env.AWS_BUCKET_NAME = "bar";
         assert.deepEqual(h.urlOptions(), {
             config:       config,

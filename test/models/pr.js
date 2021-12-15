@@ -1,6 +1,7 @@
 "use strict";
 const assert = require("assert"),
     PR = require("../../lib/models/pr");
+const SpecBuild = require("../../lib/models/spec-build");
 const payload = require("../fixtures/pr");
 
 suite("PR model", function() {
@@ -64,7 +65,7 @@ const BODY = `* Extract legacy callback interface objects
     test("get/set config", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
         assert.throws(_ => pr.config, Error);
-        let c = {};
+        let c = { specs: [{ src_file: "index.bs", type: "bikeshed" }] };
         assert.equal(pr.config = c, c);
         assert.equal(pr.config, c);
     });
@@ -99,25 +100,12 @@ const BODY = `* Extract legacy callback interface objects
     test("touchesSrcFile()", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
         pr.files = require("../fixtures/files");
-        pr.config = { src_file: "index.bs" };
+        pr.config = { specs: [{ src_file: "index.bs", type: "bikeshed" }] };
         assert(pr.touchesSrcFile());
         pr = new PR("heycam/webidl/283", { id: 234 });
         pr.files = require("../fixtures/files");
-        pr.config = { src_file: "foo.html" };
+        pr.config = { specs: [{ src_file: "foo.html", type: "html" }] };
         assert.equal(pr.touchesSrcFile(), false);
-    });
-    
-    test("get processor", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.config = { type: "bikeshed" };
-        assert.equal(pr.processor, "bikeshed");
-    });
-    
-    
-    test("processor is always lowercase", function() {
-        let pr = new PR("heycam/webidl/283", { id: 234 });
-        pr.config = { type: "Bikeshed" };
-        assert.equal(pr.processor, "bikeshed");
     });
 });
 
