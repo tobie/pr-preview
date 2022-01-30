@@ -26,7 +26,7 @@
   "dependencies": {
     "aws-sdk": "^2.441.0",
     "body-parser": "^1.18.3",
-    "dateformat": "^3.0.2",
+    "dateformat": "^3.0.3",
     "emu-algify": "^2.2.0",
     "entities": "2.0.1",
     "express": "^4.16.4",
