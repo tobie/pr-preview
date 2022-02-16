@@ -80,7 +80,6 @@ suite("Branch model", function() {
         assert.equal(h.cache_url, "https://bar.s3.amazonaws.com/tobie/webidl/pull/283.html");
         h.pr.config = { src_file: "foo.bs" };
         assert.equal(h.github_url, "https://raw.githubusercontent.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
-        assert.equal(h.cdn_url, "https://rawcdn.githack.com/tobie/webidl/7dfd134ee2e6df7fe0af770783a6b76a3fc56867/foo.bs");
     });
 
     test("Test Base getters", function() {
