@@ -1,5 +1,7 @@
 # PR Preview
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/tobie/pr-preview.svg)](https://greenkeeper.io/)
+
 **PR Preview makes it super easy to preview pull requests of specs and vizualize the changes they bring about.**
 
 PR Preview uses [web](https://labs.w3.org/spec-generator/) [services](https://api.csswg.org/bikeshed/)
@@ -17,7 +19,7 @@ Finally, PR Preview conveniently links both preview and HTML diff from within th
 ## Assumptions
 
 The only assumption made by PR Preview is that you're using
-the latest version of either Bikeshed or ReSpec to edit your spec.
+the latest version of either Bikeshed or ReSpec, or vanilla HTML to edit your spec.
 
 ## Known issues
 
@@ -43,6 +45,7 @@ is all you need to be setup if your repository is hosted in one of them:
 * [github.com/w3c](https://github.com/w3c/)
 * [github.com/whatwg](https://github.com/whatwg/)
 * [github.com/wicg](https://github.com/wicg/)
+* [github.com/w3ctag](https://github.com/w3ctag/)
 
 ## Configuration file
 
@@ -69,7 +72,7 @@ This should point to the relative path to the source file from the root of the r
 
 ### `type` (required)
 
-One of "bikeshed" or "respec".
+One of "bikeshed", "respec", or "html".
 
 ### `params` (optional)
 
@@ -80,6 +83,7 @@ using either:
 * [W3C's ReSpec web service](https://github.com/w3c/spec-generator).
 
 When constructing the URL, `params` are rendered as if they were [mustache template strings](https://github.com/janl/mustache.js#mustachejs---logic-less-mustache-templates-with-javascript).
+You can also use an array of strings, instead of a string, to pass multiple values for the same query parameter.
 
 They're passed an object containing the `config` object itself,
 the [`pull_request` payload](https://developer.github.com/v3/pulls/#get-a-single-pull-request)
@@ -111,7 +115,7 @@ to produce [this snapshot](https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw
         "md-h1": "URL <small>(<a href=\"{{ pull_request.html_url }}\">PR #{{ pull_request.number }}</a>)</small>",
         "md-warning": "Commit {{ short_sha }} {{ pull_request.head.repo.html_url }}/commit/{{ sha }} replaced by {{ config.ls_url }}",
         "md-title": "{{ config.title }} (Pull Request Snapshot #{{ pull_request.number }})",
-        "md-Text-Macro": "SNAPSHOT-LINK {{ config.back_to_ls_link }}"
+        "md-Text-Macro": ["SNAPSHOT-LINK {{ config.back_to_ls_link }}", "COMMIT-SHA {{ sha }}"]
     },
     "ls_url": "https://url.spec.whatwg.org/",
     "title": "URL Standard",

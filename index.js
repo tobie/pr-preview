@@ -19,16 +19,32 @@ function logArgs() {
 
 function logResult(r, action) {
     var err = r.error;
-    if (err && err.noConfig) {
-        logArgs(`${r.id}: ${ action } (no config)`);
-    } else if (err) {
-        logArgs(`${r.id}: ${ action } (${err.name}: ${err.message})`);
-        if (err.data) { logArgs(err.data) };
-        if (err.stack && process.env.DISPLAY_STACK_TRACES == "yes") { logArgs(err.stack) };
-    } else {
+    
+    // We're all good. Log outcome and exit.
+    if (!err) {
         logArgs(`${r.id}: ${ action }`);
         logArgs(r);
+        return;
     }
+
+    // These are well understood error paths.
+    // They shouldn't trigger error messages.
+    // Log and exit.
+    if (err.noConfig || err.prMerged || err.raceCondition) {
+        logArgs(`${r.id}: ${ action } (${err.message})`);
+        return;
+    }
+
+    // Those are reall issues.
+    // Log in details
+    logArgs(`${r.id}: ${ action } (${err.name}: ${err.message})`);
+    if (r.errorRenderingErrorMsg) {
+        logArgs(`    Additionally, triggered the following error while attempting to render the error msg to the client:
+    errorRenderingErrorMsg.name}: ${r.errorRenderingErrorMsg.message}`);
+    }
+    if (err.data) { logArgs(err.data) };
+    if (err.stack && process.env.DISPLAY_STACK_TRACES == "yes") { logArgs(err.stack) };
+    logArgs(r);
 }
 
 const controller = new Controller();
@@ -60,13 +76,17 @@ if (STARTUP_QUEUE) {
 }
 
 var app = express();
-app.use(xhub({ algorithm: 'sha1', secret: process.env.GITHUB_SECRET }));
+app.use(xhub({ algorithm: 'sha1', secret: process.env.GITHUB_SECRET, limit: '5Mb' }));
 
 app.post('/github-hook', function (req, res, next) {
     if (process.env.NODE_ENV != 'production' || req.isXHubValid()) {
         res.send(new Date().toISOString());
         var payload = req.body;
-        if (payload.pull_request) {
+        if (payload.issue_comment) { // Depends on increased app permission
+            logArgs("comment");
+        } else if (payload.issue) { // Also depends on increased app permission
+            logArgs("issue");
+        } else if (payload.pull_request) {
             if (payload.sender && payload.sender.login == "pr-preview[bot]") {
                 logArgs("skipping auto-generated changes");
             } else {

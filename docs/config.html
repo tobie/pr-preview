@@ -70,7 +70,7 @@
         </p>
         
         <p>
-            <label for="config">Config file</label> <small>(<a id=bikeshed href="#">Use Bikeshed default</a> | <a id=respec href="#">Use Respec default</a>)</small><br />
+            <label for="config">Config file</label> <small>(<a id=bikeshed href="#">Use Bikeshed default</a> | <a id=respec href="#">Use Respec default</a> | <a id=html href="#">Use HTML default</a>)</small><br />
             <div id="respec-warning" class="warning" style="display: none">
                 <p>ReSpec is known to have race condition issues when it's included using the <code>async</code> attribute.
                 Instead, use the <code>defer</code> attribute like so:</p>
@@ -113,7 +113,7 @@ if (document.addEventListener) {
   
   document.querySelector("#bikeshed").addEventListener('click', function(e) {
     e.preventDefault();
-    document.querySelector("#config").value = '{\n    "src_file": "index.bs",\n    "type": "bikeshed",\n    "params": {\n        "force": 1\n    }\n}';
+    document.querySelector("#config").value = '{\n    "src_file": "index.bs",\n    "type": "bikeshed"\n}';
     document.querySelector("#respec-warning").style.display = "none";
     
   }, false);
@@ -122,6 +122,11 @@ if (document.addEventListener) {
     e.preventDefault();
     document.querySelector("#config").value = '{\n    "src_file": "index.html",\n    "type": "respec"\n}';
     document.querySelector("#respec-warning").style.display = "block";
+  }, false);
+
+  document.querySelector("#html").addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector("#config").value = '{\n    "src_file": "index.html",\n    "type": "html"\n}';
   }, false);
 }
 
