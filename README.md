@@ -154,4 +154,4 @@ Used to pass an options object to the post-processor.
 
 ***
 
-Hosting generously provided by <a href="https://www.heroku.com/home">Heroku</a>.
+Hosting generously provided by <a href="https://www.unlockopen.com/home">UnlockOpen</a>.
