@@ -25,11 +25,11 @@
   },
   "dependencies": {
     "aws-sdk": "^2.441.0",
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.19.2",
     "dateformat": "^3.0.3",
     "emu-algify": "^2.2.0",
     "entities": "2.0.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-x-hub": "1.0.4",
     "jsonwebtoken": "^8.5.1",
     "mkdirp-promise": "^5.0.1",
