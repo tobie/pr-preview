@@ -1,8 +1,11 @@
 # PR Preview
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/tobie/pr-preview.svg)](https://greenkeeper.io/)
+Increasingly, GitHub is being used to collaborate on documents that aren't just code.
 
-**PR Preview makes it super easy to preview pull requests of specs and vizualize the changes they bring about.**
+When such documents include a build step,
+it is often difficult to assess the impact of a pull request by just looking at the source changes.
+
+This is where PR Preview steps in.
 
 PR Preview uses [web](https://labs.w3.org/spec-generator/) [services](https://api.csswg.org/bikeshed/)
 to build a ReSpec or Bikeshed versions of the spec in the pull request,
@@ -15,6 +18,10 @@ which also gets stored on AWS.
 Finally, PR Preview conveniently links both preview and HTML diff from within the pull request itself:
 
 ![screenshot](/images/screenshot-1.jpg)
+
+This makes it a lot easier to understnad the actual impact of pull requests on the end document,
+considerably speeds-up pull request reviews,
+and makes the whole collaboration process more accessible and inclusive.
 
 ## Assumptions
 
