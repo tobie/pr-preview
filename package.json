@@ -39,6 +39,6 @@
     "strip-ansi": "^6.0.0",
     "tv4": "1.3.0",
     "urlencode": "1.1.0",
-    "webidl-grammar-post-processor": "^0.4.1"
+    "webidl-grammar-post-processor": "^1.0.0"
   }
 }
