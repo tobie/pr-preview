@@ -84,4 +84,19 @@ suite('scanIncludes', function () {
                 "single.html",
             ]);
     });
+    test('Separate spec directory with includes', async function() {
+        assert.deepStrictEqual(await scanIncludes("https://github.example/repo/", "spec/index.bs", "bikeshed", fakeFetch({
+            "https://github.example/repo/spec/index.bs": { body: "path: helper.inc" },
+            "https://github.example/repo/spec/helper.inc": { body: "path: helper2.inc" },
+            "https://github.example/repo/spec/helper2.inc": { body: "path: subdir/helper3.inc" },
+            "https://github.example/repo/spec/subdir/helper3.inc": { body: "path: subdir/helper4.inc" },
+            "https://github.example/repo/spec/subdir/helper4.inc": { body: "" },
+        })),
+            [
+                "spec/helper.inc",
+                "spec/helper2.inc",
+                "spec/subdir/helper3.inc",
+                "spec/subdir/helper4.inc",
+            ]);
+    });
 });
