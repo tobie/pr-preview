@@ -142,7 +142,7 @@ suite("Branch model", function() {
             src_file: "index.bs"
         };
         assert.deepEqual(h.getUrl(h.urlOptions()), {
-            method: "post",
+            method: "POST",
             url: BIKESHED_URL + "index.bs"
         });
     });
@@ -155,7 +155,7 @@ suite("Branch model", function() {
         };
         
         assert.deepEqual(h.getUrl(h.urlOptions()), {
-            method: "post",
+            method: "POST",
             url: BIKESHED_URL + "url.bs"
         });
     });
@@ -168,7 +168,7 @@ suite("Branch model", function() {
             params: { "md-status": "REC" }
         };
         assert.deepEqual(h.getUrl(h.urlOptions()), {
-            method: "post",
+            method: "POST",
             url: BIKESHED_URL + "index.bs&md-status=REC"
         });
     });
@@ -184,7 +184,7 @@ suite("Branch model", function() {
             }
         };
         assert.deepEqual(h.getUrl(h.urlOptions()), {
-            method: "post",
+            method: "POST",
             url: BIKESHED_URL +  "index.bs&md-title=FOO%20BAR%20tobie%2Fwebidl%2Finterface-objs%23283-7dfd134"
         });
     });
@@ -199,7 +199,7 @@ suite("Branch model", function() {
             }
         };
         assert.deepEqual(h.getUrl(h.urlOptions()), {
-            method: "post",
+            method: "POST",
             url: BIKESHED_URL + "index.bs&force=1"
         });
     });
