@@ -141,7 +141,7 @@ suite("Branch model", function() {
             type: "bikeshed",
             src_file: "index.bs"
         };
-        assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL + "index.bs");
+        assert.equal(h.getUrl(h.urlOptions()).url, BIKESHED_URL + "index.bs");
     });
 
     test('Test getUrl with non standard src file name', function() {
@@ -150,7 +150,7 @@ suite("Branch model", function() {
             src_file: "url.bs",
             type: "bikeshed"
         };
-        assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL + "url.bs");
+        assert.equal(h.getUrl(h.urlOptions()).url, BIKESHED_URL + "url.bs");
     });
     
     test('Test getUrl with specific status', function() {
@@ -160,7 +160,7 @@ suite("Branch model", function() {
             type: "bikeshed",
             params: { "md-status": "REC" }
         };
-        assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&md-status=REC");
+        assert.equal(h.getUrl(h.urlOptions()).url, BIKESHED_URL +  "index.bs&md-status=REC");
     });
 
     test('Test getUrl using templating', function() {
@@ -173,7 +173,7 @@ suite("Branch model", function() {
                 "md-title": "{{config.title}} {{owner}}/{{repo}}/{{branch}}#{{pull_request.number}}-{{short_sha}}"
             }
         };
-        assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&md-title=FOO%20BAR%20tobie%2Fwebidl%2Finterface-objs%23283-7dfd134");
+        assert.equal(h.getUrl(h.urlOptions()).url, BIKESHED_URL +  "index.bs&md-title=FOO%20BAR%20tobie%2Fwebidl%2Finterface-objs%23283-7dfd134");
     });
 
     test('Test getUrl templating gracefully handles non strings', function() {
@@ -185,7 +185,7 @@ suite("Branch model", function() {
                 "force": 1
             }
         };
-        assert.equal(h.getUrl(h.urlOptions()), BIKESHED_URL +  "index.bs&force=1");
+        assert.equal(h.getUrl(h.urlOptions()).url, BIKESHED_URL +  "index.bs&force=1");
     });
 
     test('Test urlOptions', function() {
