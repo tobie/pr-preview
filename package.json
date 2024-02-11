@@ -24,7 +24,7 @@
     "mocha": "^6.1.4"
   },
   "dependencies": {
-    "aws-sdk": "^2.441.0",
+    "aws-sdk": "^2.1354.0",
     "body-parser": "^1.18.3",
     "dateformat": "^3.0.3",
     "emu-algify": "^2.2.0",
