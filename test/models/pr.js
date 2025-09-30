@@ -119,5 +119,25 @@ const BODY = `* Extract legacy callback interface objects
         pr.config = { type: "Bikeshed" };
         assert.equal(pr.processor, "bikeshed");
     });
+
+    test("refreshBody() updates body with latest content", function(done) {
+        let pr = new PR("heycam/webidl/283", { id: 234 });
+        pr.payload = JSON.parse(JSON.stringify(payload.pull_request));
+        pr.initial_updated_at = "2017-02-06T12:39:02Z";
+
+        // Mock the request method to simulate fetching updated PR
+        pr.request = function() {
+            return Promise.resolve({
+                body: "Updated body content",
+                updated_at: "2017-02-06T13:00:00Z"
+            });
+        };
+
+        pr.refreshBody().then(_ => {
+            assert.equal(pr.body, "Updated body content");
+            assert.equal(pr.payload.body, "Updated body content");
+            done();
+        }).catch(done);
+    });
 });
 
