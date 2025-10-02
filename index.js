@@ -11,6 +11,15 @@ const createApp = require("./lib/app"),
 
 const controller = new Controller();
 
+var config = {
+    githubSecret: process.env.GITHUB_SECRET,
+    port: process.env.PORT || 5000,
+    nodeEnv: process.env.NODE_ENV,
+    displayStackTraces: process.env.DISPLAY_STACK_TRACES === "yes"
+};
+
+const { logArgs, logResult } = createLogger(config);
+
 const STARTUP_QUEUE = process.env.STARTUP_QUEUE;
 if (STARTUP_QUEUE) {
     try {
@@ -36,15 +45,6 @@ if (STARTUP_QUEUE) {
 } else {
     logArgs("No startup queue present");
 }
-
-var config = {
-    githubSecret: process.env.GITHUB_SECRET,
-    port: process.env.PORT || 5000,
-    nodeEnv: process.env.NODE_ENV,
-    displayStackTraces: process.env.DISPLAY_STACK_TRACES === "yes"
-};
-
-const { logArgs, logResult } = createLogger(config);
 
 var app = createApp(controller, config);
 var port = config.port;
