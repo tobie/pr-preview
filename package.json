@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/tobie/webidl-pr-preview#readme",
   "devDependencies": {
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "supertest": "^7.1.4"
   },
   "dependencies": {
     "aws-sdk": "^2.441.0",
