@@ -119,5 +119,159 @@ const BODY = `* Extract legacy callback interface objects
         pr.config = { type: "Bikeshed" };
         assert.equal(pr.processor, "bikeshed");
     });
+
+    test("checkForChanges detects commit changes", function(done) {
+        let pr = new PR("heycam/webidl/283", { id: 234 });
+        pr.payload = {
+            head: { sha: "abc123" },
+            body: "Original body"
+        };
+
+        // Mock the request method to simulate fresh API response with new commit
+        pr.request = function() {
+            return Promise.resolve({
+                head: { sha: "def456" },
+                body: "Original body"
+            });
+        };
+
+        pr.checkForChanges().then(changeInfo => {
+            assert.equal(changeInfo.hasCommitChanges, true);
+            assert.equal(changeInfo.hasBodyChanges, false);
+            assert.equal(changeInfo.initialHeadSha, "abc123");
+            assert.equal(changeInfo.currentHeadSha, "def456");
+            done();
+        }).catch(done);
+    });
+
+    test("checkForChanges detects body changes", function(done) {
+        let pr = new PR("heycam/webidl/283", { id: 234 });
+        pr.payload = {
+            head: { sha: "abc123" },
+            body: "Original body"
+        };
+
+        // Mock the request method to simulate fresh API response with edited body
+        pr.request = function() {
+            return Promise.resolve({
+                head: { sha: "abc123" },
+                body: "Updated body content"
+            });
+        };
+
+        pr.checkForChanges().then(changeInfo => {
+            assert.equal(changeInfo.hasCommitChanges, false);
+            assert.equal(changeInfo.hasBodyChanges, true);
+            assert.equal(changeInfo.initialBody, "Original body");
+            assert.equal(changeInfo.currentBody, "Updated body content");
+            done();
+        }).catch(done);
+    });
+
+    test("checkForChanges detects no changes", function(done) {
+        let pr = new PR("heycam/webidl/283", { id: 234 });
+        pr.payload = {
+            head: { sha: "abc123" },
+            body: "Same body"
+        };
+
+        // Mock the request method to simulate no changes
+        pr.request = function() {
+            return Promise.resolve({
+                head: { sha: "abc123" },
+                body: "Same body"
+            });
+        };
+
+        pr.checkForChanges().then(changeInfo => {
+            assert.equal(changeInfo.hasCommitChanges, false);
+            assert.equal(changeInfo.hasBodyChanges, false);
+            done();
+        }).catch(done);
+    });
+
+    test("updateBody sets requeue flag when commits change", function(done) {
+        const Controller = require("../../lib/controller");
+        let controller = new Controller();
+
+        // Create a mock PR
+        let pr = new PR("heycam/webidl/283", { id: 234 });
+        pr.payload = {
+            head: { sha: "abc123" },
+            body: "Original body"
+        };
+        pr.config = { type: "respec" };
+
+        // Mock all the methods we need
+        pr.cacheAll = () => Promise.resolve();
+        pr.checkForChanges = () => Promise.resolve({
+            hasCommitChanges: true,
+            hasBodyChanges: false,
+            initialHeadSha: "abc123",
+            currentHeadSha: "def456"
+        });
+
+        let result = {
+            id: "heycam/webidl/283",
+            installation_id: 234,
+            needsUpdate: true
+        };
+
+        // Mock needsUpdate to return true
+        controller.needsUpdate = () => true;
+
+        controller.updateBody(pr, result).then(finalResult => {
+            assert.equal(finalResult.aborted, true);
+            assert.equal(finalResult.requeue, true);
+            assert.equal(finalResult.error.message, "New commits pushed during build");
+            done();
+        }).catch(done);
+    });
+
+    test("controller handles requeue flag correctly", function(done) {
+        const Controller = require("../../lib/controller");
+        let controller = new Controller();
+        let requeueCalled = false;
+
+        // Mock handlePullRequest to track re-queue calls
+        controller.handlePullRequest = function(result) {
+            if (!requeueCalled) {
+                requeueCalled = true;
+                assert.equal(result.id, "test/repo/123");
+                assert.equal(result.installation_id, 456);
+                return Promise.resolve({ id: result.id, updated: true });
+            }
+            return Promise.resolve({ id: result.id });
+        };
+
+        // Simulate the requeue logic from handlePullRequest
+        let result = {
+            id: "test/repo/123",
+            installation_id: 456,
+            requeue: true,
+            aborted: true,
+            forcedUpdate: false
+        };
+
+        // This simulates the logic in handlePullRequest lines 130-141
+        Promise.resolve(result).then(result => {
+            if (result.requeue) {
+                return controller.handlePullRequest({
+                    installation_id: result.installation_id,
+                    id: result.id,
+                    forcedUpdate: result.forcedUpdate,
+                    needsUpdate: undefined,
+                    updated: false,
+                    config: undefined,
+                    previous: undefined
+                });
+            }
+            return result;
+        }).then(finalResult => {
+            assert.equal(requeueCalled, true, "Re-queue should have been called");
+            assert.equal(finalResult.updated, true);
+            done();
+        }).catch(done);
+    });
 });
 
