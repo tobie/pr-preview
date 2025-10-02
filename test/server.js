@@ -15,8 +15,9 @@ suite('Server', () => {
             .post('/github-hook')
             .send({
                 action: 'opened',
+                number: 123,
+                installation: { id: 'test-installation' },
                 pull_request: {
-                    number: 123,
                     base: {
                         repo: {
                             full_name: 'test/repo'
@@ -56,9 +57,10 @@ suite('Server', () => {
             .post('/github-hook')
             .send({
                 action: 'opened',
+                number: 123,
+                installation: { id: 'test-installation' },
                 pull_request: {
-                    number: 123,
-                    base: {
+                  base: {
                         repo: {
                             full_name: 'test/repo'
                         }
@@ -94,7 +96,6 @@ suite('Server', () => {
             number: 123,
             installation: { id: 'test-installation' },
             pull_request: {
-                number: 123,
                 base: {
                     repo: {
                         full_name: 'test/repo'
