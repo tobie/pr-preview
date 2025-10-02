@@ -158,3 +158,44 @@ suite("Config.addDefault", function() {
     });
 });
 
+suite("Config.request", function() {
+    test("should decode base64 content correctly", function() {
+        // Create a mock PR object
+        const mockPR = {
+            request: function(api) {
+                // Return a mock GitHub API response with base64 encoded JSON
+                const configJson = { src_file: "test.bs", type: "respec" };
+                const base64Content = Buffer.from(JSON.stringify(configJson)).toString('base64');
+                return Promise.resolve({
+                    type: "file",
+                    content: base64Content
+                });
+            }
+        };
+
+        const config = new Config(mockPR);
+        return config.request().then(result => {
+            assert.equal(result.src_file, "test.bs");
+            assert.equal(result.type, "respec");
+            assert.equal(result.params.isPreview, true); // Should have default added
+        });
+    });
+
+    test("should handle invalid base64 content", function() {
+        const mockPR = {
+            request: function(api) {
+                return Promise.resolve({
+                    type: "file",
+                    content: "invalid-base64-content"
+                });
+            }
+        };
+
+        const config = new Config(mockPR);
+        return config.request().then(
+            result => assert.fail("Should have thrown an error"),
+            err => assert(err.message.includes("Unexpected token"))
+        );
+    });
+});
+
