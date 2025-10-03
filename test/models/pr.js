@@ -220,12 +220,16 @@ const BODY = `* Extract legacy callback interface objects
         // Mock needsUpdate to return true
         controller.needsUpdate = () => true;
 
-        controller.updateBody(pr, result).then(finalResult => {
-            assert.equal(finalResult.aborted, true);
-            assert.equal(finalResult.requeue, true);
-            assert.equal(finalResult.error.message, "New commits pushed during build");
+        controller.updateBody(pr, result).then(_ => {
+            // This should not be reached when commits change during build
+            done(new Error("Expected updateBody to throw an error"));
+        }).catch(error => {
+            // The error should be thrown when commits change during build
+            assert.equal(error.message, "New commits pushed during build");
+            assert.equal(error.aborted, true);
+            assert.equal(result.requeue, true);
             done();
-        }).catch(done);
+        });
     });
 
     test("controller handles requeue flag correctly", function(done) {
@@ -272,6 +276,43 @@ const BODY = `* Extract legacy callback interface objects
             assert.equal(finalResult.updated, true);
             done();
         }).catch(done);
+    });
+
+    test("aborted errors are not reported as user-facing errors", function(done) {
+        const Controller = require("../../lib/controller");
+        let controller = new Controller();
+
+        // Create a mock PR
+        let pr = new PR("heycam/webidl/283", { id: 234 });
+        pr.payload = {
+            head: { sha: "abc123" },
+            body: "Original body",
+            merged: false
+        };
+        pr.config = { type: "respec" };
+        pr.touchesSrcFile = () => true;
+        pr.requiresPreview = () => true;
+
+        // Create a result with an aborted error
+        let result = {
+            id: "heycam/webidl/283",
+            installation_id: 234,
+            error: new Error("New commits pushed during build"),
+            forcedUpdate: false
+        };
+        result.error.aborted = true;
+
+        // Set NODE_ENV to production to enable error reporting
+        const originalEnv = process.env.NODE_ENV;
+        process.env.NODE_ENV = "production";
+
+        // Test shouldReportError - it should return false for aborted errors
+        let shouldReport = controller.shouldReportError(pr, result);
+        assert.equal(shouldReport, false, "Aborted errors should not be reported");
+
+        // Restore original environment
+        process.env.NODE_ENV = originalEnv;
+        done();
     });
 });
 
