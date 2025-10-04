@@ -7,7 +7,8 @@ if (process.env.NODE_ENV === "dev") {
 
 const createApp = require("./lib/app"),
     Controller = require("./lib/controller"),
-    createLogger = require("./lib/logger");
+    createLogger = require("./lib/logger"),
+    { parseStartupQueue, processStartupQueue } = require("./lib/startup-queue");
 
 const controller = new Controller();
 
@@ -20,25 +21,11 @@ var config = {
 
 const { logArgs, logResult } = createLogger(config);
 
-const STARTUP_QUEUE = process.env.STARTUP_QUEUE;
-if (STARTUP_QUEUE) {
-    try {
-        let queue = JSON.parse(STARTUP_QUEUE);
-        if (queue && queue.length && typeof queue[0].id == "string") {
-            logArgs(`Processing startup queue: ${queue.length} jobs`);
-            queue.forEach(job => {
-                logArgs(`Queuing startup job: ${job.id}`);
-                controller.queue.push(job);
-            });
-            controller.processQueue(r => logResult(r, "startup-queue"), logArgs);
-        } else {
-            throw new Error();
-        }
-    } catch (e) {
-        logArgs(`Malformed queue ${STARTUP_QUEUE}`);
-    }
-} else {
-    logArgs("No startup queue present");
+const queue = parseStartupQueue(process.env.STARTUP_QUEUE, { logArgs, logResult });
+if (queue) {
+    processStartupQueue(queue, controller, { logArgs, logResult }).catch(error => {
+        logArgs(`Unexpected error during startup queue processing: ${error.message}`);
+    });
 }
 
 var app = createApp(controller, config);
