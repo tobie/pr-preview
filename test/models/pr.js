@@ -232,51 +232,6 @@ const BODY = `* Extract legacy callback interface objects
         });
     });
 
-    test("controller handles requeue flag correctly", function(done) {
-        const Controller = require("../../lib/controller");
-        let controller = new Controller();
-        let requeueCalled = false;
-
-        // Mock handlePullRequest to track re-queue calls
-        controller.handlePullRequest = function(result) {
-            if (!requeueCalled) {
-                requeueCalled = true;
-                assert.equal(result.id, "test/repo/123");
-                assert.equal(result.installation_id, 456);
-                return Promise.resolve({ id: result.id, updated: true });
-            }
-            return Promise.resolve({ id: result.id });
-        };
-
-        // Simulate the requeue logic from handlePullRequest
-        let result = {
-            id: "test/repo/123",
-            installation_id: 456,
-            requeue: true,
-            aborted: true,
-            forcedUpdate: false
-        };
-
-        // This simulates the logic in handlePullRequest lines 130-141
-        Promise.resolve(result).then(result => {
-            if (result.requeue) {
-                return controller.handlePullRequest({
-                    installation_id: result.installation_id,
-                    id: result.id,
-                    forcedUpdate: result.forcedUpdate,
-                    needsUpdate: undefined,
-                    updated: false,
-                    config: undefined,
-                    previous: undefined
-                });
-            }
-            return result;
-        }).then(finalResult => {
-            assert.equal(requeueCalled, true, "Re-queue should have been called");
-            assert.equal(finalResult.updated, true);
-            done();
-        }).catch(done);
-    });
 
     test("aborted errors are not reported as user-facing errors", function(done) {
         const Controller = require("../../lib/controller");

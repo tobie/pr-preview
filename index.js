@@ -25,17 +25,12 @@ if (STARTUP_QUEUE) {
     try {
         let queue = JSON.parse(STARTUP_QUEUE);
         if (queue && queue.length && typeof queue[0].id == "string") {
-            logArgs(`Processing queue : ${ STARTUP_QUEUE }`);
-            function next() {
-                var r = queue.pop();
-                if (r) {
-                    logArgs(`Processing queue : ${ r.id }`);
-                    controller.handlePullRequest(r).then(r => logResult(r, "startup-queue"), logArgs).then(next);
-                } else {
-                    logArgs("Startup queue processed");
-                }
-            }
-            next();
+            logArgs(`Processing startup queue: ${queue.length} jobs`);
+            queue.forEach(job => {
+                logArgs(`Queuing startup job: ${job.id}`);
+                controller.queue.push(job);
+            });
+            controller.processQueue(r => logResult(r, "startup-queue"), logArgs);
         } else {
             throw new Error();
         }
