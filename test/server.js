@@ -110,16 +110,16 @@ suite('Server', () => {
         // Simulate that this PR is already being processed by adding it to currently_running
         controller.currently_running.add(prId);
 
-        // Spy on queuePullRequest to verify race condition is detected
+        // With the new queue system, just verify that the job was queued
         let raceConditionDetected = false;
-        const originalQueuePullRequest = controller.queuePullRequest;
-        controller.queuePullRequest = function(payload) {
-            return originalQueuePullRequest.call(this, payload).then(result => {
+        const originalProcessQueue = controller.processQueue;
+        controller.processQueue = function(callback, errorCallback) {
+            return originalProcessQueue.call(this, result => {
                 if (result.error && result.error.raceCondition) {
                     raceConditionDetected = true;
                 }
-                return result;
-            });
+                callback(result);
+            }, errorCallback);
         };
 
         request(app)
