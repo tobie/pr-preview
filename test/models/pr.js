@@ -211,23 +211,23 @@ const BODY = `* Extract legacy callback interface objects
             currentHeadSha: "def456"
         });
 
-        let result = {
+        let job = {
             id: "heycam/webidl/283",
             installation_id: 234,
-            needsUpdate: true
+            forcedUpdate: false
         };
 
         // Mock needsUpdate to return true
         controller.needsUpdate = () => true;
 
-        controller.updateBody(pr, result).then(_ => {
+        controller.updateBody(pr, job).then(updateResult => {
             // This should not be reached when commits change during build
             done(new Error("Expected updateBody to throw an error"));
         }).catch(error => {
             // The error should be thrown when commits change during build
             assert.equal(error.message, "New commits pushed during build");
             assert.equal(error.aborted, true);
-            assert.equal(result.requeue, true);
+            assert.equal(error.requeue, true);
             done();
         });
     });
@@ -262,7 +262,7 @@ const BODY = `* Extract legacy callback interface objects
         process.env.NODE_ENV = "production";
 
         // Test shouldReportError - it should return false for aborted errors
-        let shouldReport = controller.shouldReportError(pr, result);
+        let shouldReport = controller.shouldReportError(pr, result, result.error);
         assert.equal(shouldReport, false, "Aborted errors should not be reported");
 
         // Restore original environment
