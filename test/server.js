@@ -110,17 +110,8 @@ suite('Server', () => {
         // Simulate that this PR is already being processed by adding it to currently_running
         controller.currently_running.add(prId);
 
-        // With the new queue system, just verify that the job was queued
-        let raceConditionDetected = false;
-        const originalProcessQueue = controller.processQueue;
-        controller.processQueue = function(callback, errorCallback) {
-            return originalProcessQueue.call(this, result => {
-                if (result.error && result.error.raceCondition) {
-                    raceConditionDetected = true;
-                }
-                callback(result);
-            }, errorCallback);
-        };
+        // Store initial queue length to verify duplicate job was not queued
+        const initialQueueLength = controller.queue.length;
 
         request(app)
             .post('/github-hook')
@@ -128,11 +119,10 @@ suite('Server', () => {
             .expect(200)
             .expect(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/) // Still returns timestamp
             .end((err) => {
-                // Give async processing time to complete
-                setTimeout(() => {
-                    assert(raceConditionDetected, 'Race condition should have been detected');
-                    done(err);
-                }, 50);
+                // Verify that the duplicate job was not added to the queue
+                const finalQueueLength = controller.queue.length;
+                assert.strictEqual(finalQueueLength, initialQueueLength, 'Duplicate job should not have been queued');
+                done(err);
             });
     });
 });
