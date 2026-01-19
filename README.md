@@ -7,7 +7,7 @@ it is often difficult to assess the impact of a pull request by just looking at 
 
 This is where PR Preview steps in.
 
-PR Preview uses [web](https://labs.w3.org/spec-generator/) [services](https://api.csswg.org/bikeshed/)
+PR Preview uses [spec-generator](https://www.w3.org/publications/spec-generator/)
 to build a ReSpec or Bikeshed versions of the spec in the pull request,
 which it stores on AWS.
 
@@ -84,10 +84,7 @@ One of "bikeshed", "respec", or "html".
 ### `params` (optional)
 
 `params` are used to construct the URL that transform the source file into an html document
-using either:
-
-* [Bikeshed's web service](https://api.csswg.org/bikeshed/), or
-* [W3C's ReSpec web service](https://github.com/w3c/spec-generator).
+using [W3C's spec-generator](https://github.com/w3c/spec-generator).
 
 When constructing the URL, `params` are rendered as if they were [mustache template strings](https://github.com/janl/mustache.js#mustachejs---logic-less-mustache-templates-with-javascript).
 You can also use an array of strings, instead of a string, to pass multiple values for the same query parameter.
@@ -110,7 +107,7 @@ and the `owner`, `repo`, `branch`, `sha`, `short_sha` and `url` of the branch be
 ```
 
 Here's a fairly involved config file example the URL standard could use
-to produce [this snapshot](https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwatilde%2Furl%2Fb46bf404569eece5597067e89749620faf0ea320%2Furl.bs&force=1&md-status=LS-COMMIT&md-h1=URL%20%3Csmall%3E(%3Ca%20href%3D%22https%3A%2F%2Fgithub.com%2Fwhatwg%2Furl%2Fpull%2F234%22%3EPR%20%23234%3C%2Fa%3E)%3C%2Fsmall%3E&md-warning=Commit%20b46bf40%20https%3A%2F%2Fgithub.com%2Fwatilde%2Furl%2Fcommit%2Fb46bf404569eece5597067e89749620faf0ea320%20replaced%20by%20https%3A%2F%2Furl.spec.whatwg.org%2F&md-title=URL%20Standard%20(Pull%20Request%20Snapshot%20%23234)&md-Text-Macro=SNAPSHOT-LINK%20%3Ca%20href%3D%22https%3A%2F%2Furl.spec.whatwg.org%2F%22%20id%3D%22commit-snapshot-link%22%3EGo%20to%20the%20living%20standard%3C%2Fa%3E):
+to produce [this snapshot](https://www.w3.org/publications/spec-generator/?type=bikeshed-spec&output=html&url=https%3A%2F%2Fraw.githubusercontent.com%2Fw3c%2Fcsswg-drafts%2Fb636446f7636646695b7b3b799f2a0f14a18701d%2Fcompositing-1%2FOverview.bs&force=1&md-status=LS-COMMIT&md-h1=URL%20%3Csmall%3E(%3Ca%20href%3D%22https%3A%2F%2Fgithub.com%2Fwhatwg%2Furl%2Fpull%2F234%22%3EPR%20%23234%3C%2Fa%3E)%3C%2Fsmall%3E&md-warning=Commit%20b46bf40%20https%3A%2F%2Fgithub.com%2Fwatilde%2Furl%2Fcommit%2Fb46bf404569eece5597067e89749620faf0ea320%20replaced%20by%20https%3A%2F%2Furl.spec.whatwg.org%2F&md-title=URL%20Standard%20(Pull%20Request%20Snapshot%20%23234)&md-Text-Macro=SNAPSHOT-LINK%20%3Ca%20href%3D%22https%3A%2F%2Furl.spec.whatwg.org%2F%22%20id%3D%22commit-snapshot-link%22%3EGo%20to%20the%20living%20standard%3C%2Fa%3E
 
 ```json
 {

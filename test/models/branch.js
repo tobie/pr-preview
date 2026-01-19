@@ -94,7 +94,7 @@ suite("Branch model", function() {
         assert.equal(b.sha, "2eb8839fcbc6f04cae8fede477ced39cdbb07329");
     });
 
-    const RESPEC_URL = "https://labs.w3.org/spec-generator/?type=respec&url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
+    const RESPEC_URL = "https://www.w3.org/publications/spec-generator/?type=respec&output=html&url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
 
     test("Test getUrl", function() {
         let pr = new PR("heycam/webidl/283", { id: 234 });
@@ -133,7 +133,7 @@ suite("Branch model", function() {
         assert.equal(h.getUrl(h.urlOptions()), RESPEC_URL + "index.html%3Fsubtitle%3DPR%20%23283");
     });
     
-    const BIKESHED_URL = "https://api.csswg.org/bikeshed/?url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
+    const BIKESHED_URL = "https://www.w3.org/publications/spec-generator/?type=bikeshed-spec&output=html&url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
     
     test('Test getUrl basic', function() {
         let h = headFixture();
