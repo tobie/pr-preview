@@ -6,7 +6,7 @@
     "properties": {
       "type": {
         "definition": "The spec processor used to render this spec.",
-        "enum": ["bikeshed", "Bikeshed", "BikeShed", "respec", "Respec", "ReSpec", "wattsi", "Wattsi"]
+        "enum": ["bikeshed", "Bikeshed", "BikeShed", "respec", "Respec", "ReSpec", "wattsi", "Wattsi", "html", "HTML"]
       },
       "src_file": {
           "definition": "Relative path to the source file from the root of the repository",
