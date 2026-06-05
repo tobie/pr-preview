@@ -32,9 +32,9 @@ function headFixture() {
 function mergeBaseFixture() {
     let pr = new PR("heycam/webidl/283", { id: 234 });
     pr.payload = payload.pull_request;
-    return new Branch.Head({
+    return new Branch.MergeBase({
         pr: pr,
-        owner: "heycam",
+        owner: "tobie",
         repo: "webidl",
         branch: "gh-pages",
         sha: "2eb8839fcbc6f04cae8fede477ced39cdbb07329"
@@ -90,7 +90,7 @@ suite("Branch model", function() {
     });
 
     test("Test MergeBase getters", function() {
-        let b = mergeBaseFixture    ();
+        let b = mergeBaseFixture();
         assert.equal(b.sha, "2eb8839fcbc6f04cae8fede477ced39cdbb07329");
     });
 
@@ -134,6 +134,12 @@ suite("Branch model", function() {
     });
     
     const BIKESHED_URL = "https://www.w3.org/publications/spec-generator/?type=bikeshed-spec&output=html&url=https%3A%2F%2Fraw.githubusercontent.com%2Ftobie%2Fwebidl%2F7dfd134ee2e6df7fe0af770783a6b76a3fc56867%2F";
+    const BIKESHED_URL_FOR_MERGE_BASE = BIKESHED_URL.replace(
+        // sha from headFixture:
+        "7dfd134ee2e6df7fe0af770783a6b76a3fc56867",
+        // sha from mergeBaseFixture:
+        "2eb8839fcbc6f04cae8fede477ced39cdbb07329"
+    );
     
     test('Test getUrl basic', function() {
         let h = headFixture();
@@ -202,6 +208,22 @@ suite("Branch model", function() {
             method: "POST",
             url: BIKESHED_URL + "index.bs&force=1"
         });
+    });
+
+    test('Test getUrl sets die-on=nothing for merge base', function() {
+        let b = mergeBaseFixture();
+        b.pr.config = {
+            src_file: "index.bs",
+            type: "bikeshed"
+        };
+        assert.deepEqual(b.getUrl(b.urlOptions()), {
+            method: "POST",
+            url: BIKESHED_URL_FOR_MERGE_BASE + "index.bs&die-on=nothing"
+        });
+        // Note: other getUrl tests already verify getUrl against headFixture,
+        // and the absence of "die-on" flag in those URLs provide the desired
+        // sanity check that our implementation does not unnecessarily ignore
+        // errors for anything but the merge base.
     });
 
     test('Test urlOptions', function() {
