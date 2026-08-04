@@ -201,12 +201,12 @@ suite("Branch model", function() {
             src_file: "index.bs",
             type: "bikeshed",
             params: {
-                "force": 1
+                "die-on": "nothing"
             }
         };
         assert.deepEqual(h.getUrl(h.urlOptions()), {
             method: "POST",
-            url: BIKESHED_URL + "index.bs&force=1"
+            url: BIKESHED_URL + "index.bs&die-on=nothing"
         });
     });
 
@@ -232,7 +232,7 @@ suite("Branch model", function() {
             src_file: "index.bs",
             type: "bikeshed",
             params: {
-                "force": 1
+                "die-on": "nothing"
             }
         }
         h.pr.config = config;
